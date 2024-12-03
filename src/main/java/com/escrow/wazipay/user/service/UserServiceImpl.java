@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDto setUserPin(UserSetPinDto userSetPinDto) {
         User user = userDao.getUserByUserId(userSetPinDto.getUserId());
-        user.setPin(passwordEncoder.encode(userSetPinDto.getPin().toString()));
+        user.setPin(passwordEncoder.encode(userSetPinDto.getPin()));
         return userDtoMapper.toUserDto(userDao.updateUser(user));
     }
 

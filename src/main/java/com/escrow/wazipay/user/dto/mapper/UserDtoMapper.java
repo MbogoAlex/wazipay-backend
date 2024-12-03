@@ -10,6 +10,7 @@ public class UserDtoMapper {
 
 
         return UserDto.builder()
+                .userId(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())

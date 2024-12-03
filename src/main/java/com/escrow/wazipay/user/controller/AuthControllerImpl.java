@@ -50,7 +50,12 @@ public class AuthControllerImpl implements AuthController{
     @PutMapping("pin")
     @Override
     public ResponseEntity<Response> setPin(@RequestBody UserSetPinDto userSetPinDto) {
-        return buildResponse.createResponse("user", userService.setUserPin(userSetPinDto), "New pin created", HttpStatus.OK);
+        if(userSetPinDto.getPin().length() < 6) {
+            return buildResponse.createResponse(null, null, "Pin must be at least 6 digits", HttpStatus.FORBIDDEN);
+
+        } else {
+            return buildResponse.createResponse("user", userService.setUserPin(userSetPinDto), "New pin created", HttpStatus.OK);
+        }
     }
 
     @PostMapping("login")
@@ -74,7 +79,7 @@ public class AuthControllerImpl implements AuthController{
             return buildResponse.createResponse("user", userMap, "user logged in", HttpStatus.OK);
 
         } catch (AuthenticationException e) {
-            return buildResponse.createResponse(null, null, "Invalid phoneNumber or password", HttpStatus.UNAUTHORIZED);
+            return buildResponse.createResponse(null, null, e.toString(), HttpStatus.UNAUTHORIZED);
         }
     }
 }

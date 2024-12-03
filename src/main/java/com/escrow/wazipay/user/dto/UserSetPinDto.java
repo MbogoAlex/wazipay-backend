@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserSetPinDto {
     private Integer userId;
-    private Long pin;
+    private String pin;
 }
