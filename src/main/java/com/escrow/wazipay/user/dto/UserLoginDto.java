@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserLoginDto {
     private String phoneNumber;
-    private String password;
+    private String pin;
 }

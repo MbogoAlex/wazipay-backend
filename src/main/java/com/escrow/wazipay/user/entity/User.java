@@ -22,7 +22,7 @@ public class User {
     private String email;
     @Column(name = "phone_number")
     private String phoneNumber;
-    private String password;
+    private String pin;
     @Column(name = "verification_status")
     @Enumerated(EnumType.STRING)
     private VerificationStatus verificationStatus;

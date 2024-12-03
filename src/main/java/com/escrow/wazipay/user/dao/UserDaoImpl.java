@@ -30,6 +30,7 @@ public class UserDaoImpl implements UserDao{
         return user;
     }
 
+
     @Override
     public User getUserByUserId(Integer userId) {
         TypedQuery<User> query = entityManager.createQuery("from User where id = :id", User.class);
@@ -49,6 +50,20 @@ public class UserDaoImpl implements UserDao{
         TypedQuery<User> query = entityManager.createQuery("from User where email = :email", User.class);
         query.setParameter("email", email);
         return query.getSingleResult();
+    }
+
+    @Override
+    public Boolean existsByPhoneNumber(String phoneNumber) {
+        TypedQuery<User> query = entityManager.createQuery("from User where phoneNumber = :phoneNumber", User.class);
+        query.setParameter("phoneNumber", phoneNumber);
+        return !query.getResultList().isEmpty();
+    }
+
+    @Override
+    public Boolean existsByEmail(String email) {
+        TypedQuery<User> query = entityManager.createQuery("from User where email = :email", User.class);
+        query.setParameter("email", email);
+        return !query.getResultList().isEmpty();
     }
 
     @Override

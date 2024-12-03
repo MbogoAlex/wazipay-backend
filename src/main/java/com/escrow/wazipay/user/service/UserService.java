@@ -7,10 +7,12 @@ public interface UserService {
     UserDto createAccount(UserRegistrationDto userRegistrationDto);
     UserDto login(UserLoginDto userLoginDto);
     UserDto updateUserGeneralDetails(UserUpdateDto user);
-    UserDto updateUserPassword(UserUpdatePasswordDto user);
+    UserDto setUserPin(UserSetPinDto user);
     UserDto getUserByUserId(Integer userId);
     UserDto getUserByPhoneNumber(String phoneNumber);
     UserDto getUserByEmail(String email);
+    Boolean existsByPhoneNumber(String phoneNumber);
+    Boolean existsByEmail(String email);
     List<UserDto> getUsers();
 
 }

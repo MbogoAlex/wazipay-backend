@@ -10,5 +10,7 @@ public interface UserDao {
     User getUserByUserId(Integer userId);
     User getUserByPhoneNumber(String phoneNumber);
     User getUserByEmail(String email);
+    Boolean existsByPhoneNumber(String phoneNumber);
+    Boolean existsByEmail(String email);
     List<User> getAllUsers();
 }

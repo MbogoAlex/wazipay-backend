@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserUpdatePasswordDto {
+public class UserSetPinDto {
     private Integer userId;
-    private String newPassword;
+    private Long pin;
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,12 +33,12 @@ public class UserServiceImpl implements UserService{
     @Transactional
     @Override
     public UserDto createAccount(UserRegistrationDto userRegistrationDto) {
+        List<UserRole> userRoles = new ArrayList<>();
         UserRole userRole = new UserRole();
         User user = User.builder()
                 .name(userRegistrationDto.getName())
                 .email(userRegistrationDto.getEmail())
                 .phoneNumber(userRegistrationDto.getPhoneNumber())
-                .password(passwordEncoder.encode(userRegistrationDto.getPassword()))
                 .verificationStatus(VerificationStatus.PENDING_VERIFICATION)
                 .createdAt(LocalDateTime.now())
                 .archived(false)
@@ -45,8 +46,8 @@ public class UserServiceImpl implements UserService{
 
         userRole.setUser(user);
         userRole.setRole(UserRoleEnum.valueOf(userRegistrationDto.getRole().toUpperCase()));
-
-        user.getRoles().add(userRole);
+        userRoles.add(userRole);
+        user.setRoles(userRoles);
 
         return userDtoMapper.toUserDto(userDao.createAccount(user));
     }
@@ -75,9 +76,9 @@ public class UserServiceImpl implements UserService{
     }
     @Transactional
     @Override
-    public UserDto updateUserPassword(UserUpdatePasswordDto userUpdatePasswordDto) {
-        User user = userDao.getUserByUserId(userUpdatePasswordDto.getUserId());
-        user.setPassword(passwordEncoder.encode(userUpdatePasswordDto.getNewPassword()));
+    public UserDto setUserPin(UserSetPinDto userSetPinDto) {
+        User user = userDao.getUserByUserId(userSetPinDto.getUserId());
+        user.setPin(passwordEncoder.encode(userSetPinDto.getPin().toString()));
         return userDtoMapper.toUserDto(userDao.updateUser(user));
     }
 
@@ -97,7 +98,17 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public Boolean existsByPhoneNumber(String phoneNumber) {
+        return userDao.existsByPhoneNumber(phoneNumber);
+    }
+
+    @Override
+    public Boolean existsByEmail(String email) {
+        return userDao.existsByEmail(email);
+    }
+
+    @Override
     public List<UserDto> getUsers() {
-        return userDao.getAllUsers().stream().map(user -> userDtoMapper.toUserDto(user)).collect(Collectors.toList());
+        return userDao.getAllUsers().stream().map(userDtoMapper::toUserDto).collect(Collectors.toList());
     }
 }
