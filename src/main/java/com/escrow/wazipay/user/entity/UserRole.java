@@ -24,5 +24,5 @@ public class UserRole {
     private User user;
 
     @Enumerated(EnumType.STRING)
-    private WazipayUserRole role;
+    private UserRoleEnum role;
 }
