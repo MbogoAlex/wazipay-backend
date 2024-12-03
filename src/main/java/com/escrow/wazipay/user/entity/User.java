@@ -25,7 +25,8 @@ public class User {
     private Integer id;
     private String name;
     private String email;
-    private String phone;
+    @Column(name = "phone_number")
+    private String phoneNumber;
     private String password;
 
     @Column(name = "created_at")
