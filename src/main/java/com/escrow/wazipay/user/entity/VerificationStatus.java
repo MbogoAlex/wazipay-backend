@@ -1,6 +1,6 @@
 package com.escrow.wazipay.user.entity;
 
-public enum ProfileStatus {
+public enum VerificationStatus {
     PENDING_VERIFICATION,
     VERIFIED
 }
