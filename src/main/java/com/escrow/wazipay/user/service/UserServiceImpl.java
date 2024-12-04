@@ -1,5 +1,7 @@
 package com.escrow.wazipay.user.service;
 
+import com.escrow.wazipay.media.dao.SettingsDao;
+import com.escrow.wazipay.media.entity.Settings;
 import com.escrow.wazipay.user.dao.UserDao;
 import com.escrow.wazipay.user.dto.*;
 import com.escrow.wazipay.user.dto.mapper.UserDtoMapper;
@@ -21,25 +23,30 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService{
     private final UserDtoMapper userDtoMapper = new UserDtoMapper();
     private final UserDao userDao;
+
+    private final SettingsDao settingsDao;
     private final PasswordEncoder passwordEncoder;
     @Autowired
     public UserServiceImpl(
             UserDao userDao,
+            SettingsDao settingsDao,
             PasswordEncoder passwordEncoder
     ) {
         this.userDao = userDao;
+        this.settingsDao = settingsDao;
         this.passwordEncoder = passwordEncoder;
     }
     @Transactional
     @Override
     public UserDto createAccount(UserRegistrationDto userRegistrationDto) {
+        Settings domain = settingsDao.findBySettingsKey("domain");
         List<UserRole> userRoles = new ArrayList<>();
         UserRole userRole = new UserRole();
         User user = User.builder()
                 .name(userRegistrationDto.getName())
                 .email(userRegistrationDto.getEmail())
                 .phoneNumber(userRegistrationDto.getPhoneNumber())
-                .verificationStatus(VerificationStatus.PENDING_VERIFICATION)
+                .verificationStatus(VerificationStatus.NOT_VERIFIED)
                 .createdAt(LocalDateTime.now())
                 .archived(false)
                 .build();
@@ -49,7 +56,7 @@ public class UserServiceImpl implements UserService{
         userRoles.add(userRole);
         user.setRoles(userRoles);
 
-        return userDtoMapper.toUserDto(userDao.createAccount(user));
+        return userDtoMapper.toUserDto(userDao.createAccount(user), domain);
     }
 
     @Override
@@ -59,6 +66,7 @@ public class UserServiceImpl implements UserService{
     @Transactional
     @Override
     public UserDto updateUserGeneralDetails(UserUpdateDto userUpdateDto) {
+        Settings domain = settingsDao.findBySettingsKey("domain");
         User user = userDao.getUserByUserId(userUpdateDto.getUserId());
         if(!user.getName().equalsIgnoreCase(userUpdateDto.getName())) {
             user.setName(userUpdateDto.getName());
@@ -72,29 +80,33 @@ public class UserServiceImpl implements UserService{
         if(user.getVerificationStatus() != VerificationStatus.valueOf(userUpdateDto.getVerificationStatus().toUpperCase())) {
             user.setVerificationStatus(VerificationStatus.valueOf(userUpdateDto.getVerificationStatus().toUpperCase()));
         }
-        return userDtoMapper.toUserDto(userDao.updateUser(user));
+        return userDtoMapper.toUserDto(userDao.updateUser(user), domain);
     }
     @Transactional
     @Override
     public UserDto setUserPin(UserSetPinDto userSetPinDto) {
+        Settings domain = settingsDao.findBySettingsKey("domain");
         User user = userDao.getUserByUserId(userSetPinDto.getUserId());
         user.setPin(passwordEncoder.encode(userSetPinDto.getPin()));
-        return userDtoMapper.toUserDto(userDao.updateUser(user));
+        return userDtoMapper.toUserDto(userDao.updateUser(user), domain);
     }
 
     @Override
     public UserDto getUserByUserId(Integer userId) {
-        return userDtoMapper.toUserDto(userDao.getUserByUserId(userId));
+        Settings domain = settingsDao.findBySettingsKey("domain");
+        return userDtoMapper.toUserDto(userDao.getUserByUserId(userId), domain);
     }
 
     @Override
     public UserDto getUserByPhoneNumber(String phoneNumber) {
-        return userDtoMapper.toUserDto(userDao.getUserByPhoneNumber(phoneNumber));
+        Settings domain = settingsDao.findBySettingsKey("domain");
+        return userDtoMapper.toUserDto(userDao.getUserByPhoneNumber(phoneNumber), domain);
     }
 
     @Override
     public UserDto getUserByEmail(String email) {
-        return userDtoMapper.toUserDto(userDao.getUserByEmail(email));
+        Settings domain = settingsDao.findBySettingsKey("domain");
+        return userDtoMapper.toUserDto(userDao.getUserByEmail(email), domain);
     }
 
     @Override
@@ -109,6 +121,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<UserDto> getUsers() {
-        return userDao.getAllUsers().stream().map(userDtoMapper::toUserDto).collect(Collectors.toList());
+        Settings domain = settingsDao.findBySettingsKey("domain");
+        return userDao.getAllUsers().stream()
+                .map(user -> userDtoMapper.toUserDto(user, domain))
+                .collect(Collectors.toList());
     }
 }

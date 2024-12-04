@@ -32,8 +32,10 @@ public class User {
     private Boolean archived;
     @Column(name = "archived_at")
     private LocalDateTime archivedAt;
+    @Column(name = "verified_at")
+    private LocalDateTime verifiedAt;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<UserRole> roles = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)

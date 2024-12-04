@@ -30,15 +30,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(
                                 "/api/auth/**",
-                                "/api/payment/ipn",
-                                "/api/user/supabase",
-                                "/api/payment/supabase",
-                                "/api/version**",
-                                "/swagger-ui**",
-                                "/swagger-ui/**",
-                                "/api/subscription/**",
-                                "https://pay.pesapal.com/**"
+                                "/images/"
                         ).permitAll()
+
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling((exceptions) -> exceptions
@@ -47,6 +41,7 @@ public class SecurityConfig {
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

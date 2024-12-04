@@ -4,6 +4,7 @@ import com.escrow.wazipay.user.entity.User;
 import com.escrow.wazipay.verification.entity.UserVerification;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "image")
 public class VerificationImage {
     @Id
@@ -20,7 +22,7 @@ public class VerificationImage {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "verification_id", nullable = false)
     private UserVerification userVerification;
 }

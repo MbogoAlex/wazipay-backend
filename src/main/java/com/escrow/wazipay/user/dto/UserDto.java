@@ -1,6 +1,7 @@
 package com.escrow.wazipay.user.dto;
 
 import com.escrow.wazipay.user.entity.VerificationStatus;
+import com.escrow.wazipay.verification.dto.UserVerificationDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +21,9 @@ public class UserDto {
     private String email;
     private List<String> roles;
     private LocalDateTime createdAt;
+    private LocalDateTime verifiedAt;
     private VerificationStatus verificationStatus;
+    private UserVerificationDto verificationDetails;
     private Boolean archived;
     private LocalDateTime archivedAt;
 }

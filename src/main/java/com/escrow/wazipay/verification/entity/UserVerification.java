@@ -4,12 +4,15 @@ import com.escrow.wazipay.media.entity.VerificationImage;
 import com.escrow.wazipay.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "user_verification")
 public class UserVerification {
@@ -18,12 +21,9 @@ public class UserVerification {
     private Integer id;
     private String businessName;
     private String businessLocation;
-    @OneToOne(mappedBy = "userVerification", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private VerificationImage idFront;
-    @OneToOne(mappedBy = "userVerification", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private VerificationImage idBack;
 
-
+    @OneToMany(mappedBy = "userVerification", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<VerificationImage> idImages;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
