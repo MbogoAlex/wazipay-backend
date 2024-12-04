@@ -1,5 +1,6 @@
 package com.escrow.wazipay.user.entity;
 
+import com.escrow.wazipay.verification.entity.UserVerification;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,4 +35,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserRole> roles = new ArrayList<>();
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private UserVerification userVerification;
 }
