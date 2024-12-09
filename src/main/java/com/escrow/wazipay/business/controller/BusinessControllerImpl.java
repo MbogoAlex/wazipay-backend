@@ -34,8 +34,14 @@ public class BusinessControllerImpl implements BusinessController{
     ) {
         UserDto user = userService.getUserByUserId(newBusiness.getUserId());
 
+
+
         if(user.getVerified()) {
-            return buildResponse.createResponse("business", businessService.addBusiness(newBusiness), "Business added", HttpStatus.CREATED);
+            if(user.getSuspended()) {
+                return buildResponse.createResponse("business", "User is suspended", "Failed to add business", HttpStatus.FORBIDDEN);
+            } else {
+                return buildResponse.createResponse("business", businessService.addBusiness(newBusiness), "Business added", HttpStatus.CREATED);
+            }
         } else {
             return buildResponse.createResponse("business", "User is not yet verified", "Failed to add business", HttpStatus.FORBIDDEN);
         }

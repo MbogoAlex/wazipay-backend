@@ -1,6 +1,7 @@
 package com.escrow.wazipay.user.dto.mapper;
 
 import com.escrow.wazipay.media.entity.Settings;
+import com.escrow.wazipay.suspension.dto.mapper.SuspensionMapperDto;
 import com.escrow.wazipay.user.dto.UserDto;
 import com.escrow.wazipay.user.entity.User;
 import com.escrow.wazipay.verification.dto.UserVerificationDto;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 public class UserDtoMapper {
     public UserDto toUserDto(User user, Settings settings) {
         UserVerificationDtoMapper userVerificationDtoMapper = new UserVerificationDtoMapper();
+        SuspensionMapperDto suspensionMapperDto = new SuspensionMapperDto();
 
         return UserDto.builder()
                 .userId(user.getId())
@@ -23,6 +25,8 @@ public class UserDtoMapper {
                 .verifiedAt(user.getVerifiedAt())
                 .verificationStatus(user.getVerificationStatus())
                 .verificationDetails(userVerificationDtoMapper.toUserverificationDto(user.getUserVerification(), settings))
+                .suspended(user.getSuspended())
+                .suspensions(user.getSuspensions().stream().map(suspensionMapperDto::toSuspensionDto).collect(Collectors.toList()))
                 .archived(user.getArchived())
                 .archivedAt(user.getArchivedAt())
                 .build();

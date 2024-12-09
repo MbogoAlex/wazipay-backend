@@ -1,6 +1,7 @@
 package com.escrow.wazipay.user.entity;
 
 import com.escrow.wazipay.business.entity.Business;
+import com.escrow.wazipay.suspension.entity.Suspension;
 import com.escrow.wazipay.verification.entity.UserVerification;
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,6 +37,10 @@ public class User {
     private Boolean verified;
     @Column(name = "verified_at")
     private LocalDateTime verifiedAt;
+    private Boolean suspended;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Suspension> suspensions;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<UserRole> roles = new ArrayList<>();

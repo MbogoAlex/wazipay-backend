@@ -50,6 +50,8 @@ public class UserServiceImpl implements UserService{
                 .verificationStatus(VerificationStatus.NOT_VERIFIED)
                 .createdAt(LocalDateTime.now())
                 .archived(false)
+                .suspended(false)
+                .suspensions(new ArrayList<>())
                 .build();
 
         userRole.setUser(user);
@@ -108,6 +110,34 @@ public class UserServiceImpl implements UserService{
     public UserDto getUserByEmail(String email) {
         Settings domain = settingsDao.findBySettingsKey("domain");
         return userDtoMapper.toUserDto(userDao.getUserByEmail(email), domain);
+    }
+    @Transactional
+    @Override
+    public UserDto approveUser(ApproveUserDto userDto) {
+        Settings settings = settingsDao.findBySettingsKey("domain");
+        User user = userDao.getUserByUserId(userDto.getUserId());
+        UserRole userRole = UserRole.builder()
+                .user(user)
+                        .role(UserRoleEnum.valueOf(userDto.getRole().toUpperCase()))
+                                .build();
+
+
+        user.setVerified(true);
+        user.setVerificationStatus(VerificationStatus.VERIFIED);
+        user.getRoles().add(userRole);
+        user.setVerifiedAt(LocalDateTime.now());
+        return userDtoMapper.toUserDto(userDao.updateUser(user), settings);
+    }
+    @Transactional
+    @Override
+    public UserDto disapproveUser(Integer userId) {
+        Settings settings = settingsDao.findBySettingsKey("domain");
+        User user = userDao.getUserByUserId(userId);
+
+        user.setVerified(false);
+        user.setVerificationStatus(VerificationStatus.REJECTED);
+
+        return userDtoMapper.toUserDto(userDao.updateUser(user), settings);
     }
 
     @Override

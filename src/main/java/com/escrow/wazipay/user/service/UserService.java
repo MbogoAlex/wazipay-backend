@@ -11,6 +11,9 @@ public interface UserService {
     UserDto getUserByUserId(Integer userId);
     UserDto getUserByPhoneNumber(String phoneNumber);
     UserDto getUserByEmail(String email);
+
+    UserDto approveUser(ApproveUserDto approveUserDto);
+    UserDto disapproveUser(Integer userId);
     Boolean existsByPhoneNumber(String phoneNumber);
     Boolean existsByEmail(String email);
     List<UserDto> getUsers();

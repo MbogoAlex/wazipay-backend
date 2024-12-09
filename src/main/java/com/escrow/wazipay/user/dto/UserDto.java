@@ -1,5 +1,7 @@
 package com.escrow.wazipay.user.dto;
 
+import com.escrow.wazipay.suspension.dto.SuspendUserDto;
+import com.escrow.wazipay.suspension.dto.SuspensionDto;
 import com.escrow.wazipay.user.entity.VerificationStatus;
 import com.escrow.wazipay.verification.dto.UserVerificationDto;
 import lombok.AllArgsConstructor;
@@ -25,6 +27,8 @@ public class UserDto {
     private LocalDateTime verifiedAt;
     private VerificationStatus verificationStatus;
     private UserVerificationDto verificationDetails;
+    private Boolean suspended;
+    private List<SuspensionDto> suspensions;
     private Boolean archived;
     private LocalDateTime archivedAt;
 }
