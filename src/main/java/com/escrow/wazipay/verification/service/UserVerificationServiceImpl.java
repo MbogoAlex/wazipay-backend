@@ -4,9 +4,15 @@ import com.escrow.wazipay.media.dao.SettingsDao;
 import com.escrow.wazipay.media.entity.Settings;
 import com.escrow.wazipay.media.entity.VerificationImage;
 import com.escrow.wazipay.user.dao.UserDao;
+import com.escrow.wazipay.user.dto.UserDto;
+import com.escrow.wazipay.user.dto.mapper.UserDtoMapper;
+import com.escrow.wazipay.user.entity.UserRole;
+import com.escrow.wazipay.user.entity.UserRoleEnum;
+import com.escrow.wazipay.verification.dto.ApproveUserDto;
 import com.escrow.wazipay.user.entity.User;
 import com.escrow.wazipay.user.entity.VerificationStatus;
 import com.escrow.wazipay.verification.dao.UserVerificationDao;
+import com.escrow.wazipay.verification.dto.RejectUserDto;
 import com.escrow.wazipay.verification.dto.UserVerificationDto;
 import com.escrow.wazipay.verification.dto.mapper.UserVerificationDtoMapper;
 import com.escrow.wazipay.verification.entity.UserVerification;
@@ -17,8 +23,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserVerificationServiceImpl implements UserVerificationService{
@@ -100,6 +108,41 @@ public class UserVerificationServiceImpl implements UserVerificationService{
     public UserVerificationDto getUserVerificationDetails(Integer userId) {
         Settings settings = settingsDao.findBySettingsKey("domain");
         return userVerificationDtoMapper.toUserverificationDto(userVerificationDao.getUserVerificationDetails(userId), settings);
+    }
+
+    @Transactional
+    @Override
+    public UserVerificationDto approveUser(ApproveUserDto userDto) {
+        Settings settings = settingsDao.findBySettingsKey("domain");
+        User user = userDao.getUserByUserId(userDto.getApplicantId());
+        UserRole userRole = UserRole.builder()
+                .user(user)
+                .role(UserRoleEnum.valueOf(userDto.getRole().toUpperCase()))
+                .build();
+
+
+        user.setVerified(true);
+        user.setVerificationStatus(VerificationStatus.VERIFIED);
+        user.getRoles().add(userRole);
+        user.setVerifiedAt(LocalDateTime.now());
+        return userVerificationDtoMapper.toUserVerificationDto2(userDao.updateUser(user), settings);
+    }
+    @Transactional
+    @Override
+    public UserVerificationDto rejectUserVerification(RejectUserDto rejectUserDto) {
+        Settings settings = settingsDao.findBySettingsKey("domain");
+        User user = userDao.getUserByUserId(rejectUserDto.getApplicantId());
+
+        user.setVerified(false);
+        user.setVerificationStatus(VerificationStatus.REJECTED);
+
+        return userVerificationDtoMapper.toUserVerificationDto2(userDao.updateUser(user), settings);
+    }
+
+    @Override
+    public List<UserVerificationDto> getVerificationRequests() {
+        Settings settings = settingsDao.findBySettingsKey("domain");
+        return userVerificationDao.getVerificationRequests().stream().map(userVerification -> userVerificationDtoMapper.toUserverificationDto(userVerification, settings)).collect(Collectors.toList());
     }
 
 

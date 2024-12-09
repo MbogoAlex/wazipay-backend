@@ -1,4 +1,4 @@
-package com.escrow.wazipay.suspension.dto;
+package com.escrow.wazipay.verification.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LiftSuspensionDto {
+public class RejectUserDto {
     private Integer adminId;
-    private Integer suspensionId;
-    private String suspensionLiftReason;
+    private Integer applicantId;
+    private String message;
 }

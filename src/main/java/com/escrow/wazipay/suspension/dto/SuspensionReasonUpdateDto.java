@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LiftSuspensionDto {
+public class SuspensionReasonUpdateDto {
     private Integer adminId;
     private Integer suspensionId;
-    private String suspensionLiftReason;
+    private String suspensionReason;
 }

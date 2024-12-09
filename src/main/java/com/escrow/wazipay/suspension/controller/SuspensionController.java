@@ -4,11 +4,12 @@ import com.escrow.wazipay.response.Response;
 import com.escrow.wazipay.suspension.dto.LiftSuspensionDto;
 import com.escrow.wazipay.suspension.dto.SuspendUserDto;
 import com.escrow.wazipay.suspension.dto.SuspensionDto;
+import com.escrow.wazipay.suspension.dto.SuspensionReasonUpdateDto;
 import org.springframework.http.ResponseEntity;
 
 public interface SuspensionController {
     ResponseEntity<Response> suspendUser(SuspendUserDto suspendUserDto);
-    ResponseEntity<Response>  updateSuspensionReason(SuspensionDto suspensionDto);
+    ResponseEntity<Response>  updateSuspensionReason(SuspensionReasonUpdateDto suspensionDto);
     ResponseEntity<Response>  updateSuspensionLiftReason(LiftSuspensionDto liftSuspensionDto);
 
     ResponseEntity<Response>  liftSuspension(LiftSuspensionDto liftSuspensionDto);
@@ -16,4 +17,5 @@ public interface SuspensionController {
     ResponseEntity<Response>  getSuspension(Integer id);
 
     ResponseEntity<Response>  getUserSuspensions(Integer userId);
+    ResponseEntity<Response> getAllSuspensions();
 }

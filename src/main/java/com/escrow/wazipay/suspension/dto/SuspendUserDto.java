@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class SuspendUserDto {
+    private Integer adminId;
     private Integer userId;
     private String suspensionReason;
 }

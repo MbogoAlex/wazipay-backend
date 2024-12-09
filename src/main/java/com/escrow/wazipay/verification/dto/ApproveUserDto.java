@@ -1,4 +1,4 @@
-package com.escrow.wazipay.user.dto;
+package com.escrow.wazipay.verification.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ApproveUserDto {
-    private Integer userId;
+    private Integer adminId;
+    private Integer applicantId;
     private String role;
+    private String message;
 }

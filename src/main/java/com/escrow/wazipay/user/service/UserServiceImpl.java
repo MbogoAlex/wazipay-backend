@@ -9,6 +9,7 @@ import com.escrow.wazipay.user.entity.User;
 import com.escrow.wazipay.user.entity.UserRole;
 import com.escrow.wazipay.user.entity.UserRoleEnum;
 import com.escrow.wazipay.user.entity.VerificationStatus;
+import com.escrow.wazipay.verification.dto.ApproveUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -115,7 +116,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDto approveUser(ApproveUserDto userDto) {
         Settings settings = settingsDao.findBySettingsKey("domain");
-        User user = userDao.getUserByUserId(userDto.getUserId());
+        User user = userDao.getUserByUserId(userDto.getApplicantId());
         UserRole userRole = UserRole.builder()
                 .user(user)
                         .role(UserRoleEnum.valueOf(userDto.getRole().toUpperCase()))

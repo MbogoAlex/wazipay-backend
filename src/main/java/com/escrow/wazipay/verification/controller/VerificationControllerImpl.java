@@ -2,6 +2,10 @@ package com.escrow.wazipay.verification.controller;
 
 import com.escrow.wazipay.response.BuildResponse;
 import com.escrow.wazipay.response.Response;
+import com.escrow.wazipay.user.dto.UserDto;
+import com.escrow.wazipay.user.service.UserService;
+import com.escrow.wazipay.verification.dto.ApproveUserDto;
+import com.escrow.wazipay.verification.dto.RejectUserDto;
 import com.escrow.wazipay.verification.service.UserVerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,9 +19,14 @@ public class VerificationControllerImpl implements VerificationController{
 
     private final BuildResponse buildResponse = new BuildResponse();
     private final UserVerificationService userVerificationService;
+    private final UserService userService;
     @Autowired
-    public VerificationControllerImpl(UserVerificationService userVerificationService) {
+    public VerificationControllerImpl(
+            UserVerificationService userVerificationService,
+            UserService userService
+    ) {
         this.userVerificationService = userVerificationService;
+        this.userService = userService;
     }
     @PostMapping("verificationrequest/{userId}")
     @Override
@@ -39,5 +48,30 @@ public class VerificationControllerImpl implements VerificationController{
     @Override
     public ResponseEntity<Response> getUserVerificationDetails(@PathVariable(name = "userId") Integer userId) {
         return buildResponse.createResponse("user", userVerificationService.getUserVerificationDetails(userId), "Verification details fetched", HttpStatus.OK);
+    }
+    @PutMapping("verification/approve")
+    @Override
+    public ResponseEntity<Response> approveUser(@RequestBody ApproveUserDto approveUserDto) {
+        UserDto user = userService.getUserByUserId(approveUserDto.getAdminId());
+        if(user.getRoles().contains("ADMIN")) {
+            return buildResponse.createResponse("verification", userVerificationService.approveUser(approveUserDto), "User approved", HttpStatus.OK);
+        } else {
+            return buildResponse.createResponse("verification", "Not allowed to do this action", "FAIL", HttpStatus.FORBIDDEN);
+        }
+    }
+    @PutMapping("verification/reject")
+    @Override
+    public ResponseEntity<Response> rejectUserVerification(@RequestBody RejectUserDto rejectUserDto) {
+        UserDto user = userService.getUserByUserId(rejectUserDto.getAdminId());
+        if(user.getRoles().contains("ADMIN")) {
+            return buildResponse.createResponse("verification", userVerificationService.rejectUserVerification(rejectUserDto), "User rejected", HttpStatus.OK);
+        } else {
+            return buildResponse.createResponse("verification", "Not allowed to do this action", "User not approved", HttpStatus.FORBIDDEN);
+        }
+    }
+    @GetMapping("verification/requests")
+    @Override
+    public ResponseEntity<Response> getVerificationRequests() {
+        return buildResponse.createResponse("verification", userVerificationService.getVerificationRequests(), "Verification requests fetched", HttpStatus.OK);
     }
 }

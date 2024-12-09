@@ -4,6 +4,7 @@ import com.escrow.wazipay.suspension.dao.SuspensionDao;
 import com.escrow.wazipay.suspension.dto.LiftSuspensionDto;
 import com.escrow.wazipay.suspension.dto.SuspendUserDto;
 import com.escrow.wazipay.suspension.dto.SuspensionDto;
+import com.escrow.wazipay.suspension.dto.SuspensionReasonUpdateDto;
 import com.escrow.wazipay.suspension.dto.mapper.SuspensionMapperDto;
 import com.escrow.wazipay.suspension.entity.Suspension;
 import com.escrow.wazipay.user.dao.UserDao;
@@ -47,7 +48,7 @@ public class SuspensionServiceImpl implements SuspensionService{
     }
     @Transactional
     @Override
-    public SuspensionDto updateSuspensionReason(SuspensionDto suspensionDto) {
+    public SuspensionDto updateSuspensionReason(SuspensionReasonUpdateDto suspensionDto) {
         Suspension suspension = suspensionDao.getSuspension(suspensionDto.getSuspensionId());
         suspension.setSuspensionReason(suspensionDto.getSuspensionReason());
 
@@ -57,7 +58,7 @@ public class SuspensionServiceImpl implements SuspensionService{
     @Override
     public SuspensionDto updateSuspensionLiftReason(LiftSuspensionDto liftSuspensionDto) {
         Suspension suspension = suspensionDao.getSuspension(liftSuspensionDto.getSuspensionId());
-        suspension.setSuspensionLiftReason(liftSuspensionDto.getSuspensionListReason());
+        suspension.setSuspensionLiftReason(liftSuspensionDto.getSuspensionLiftReason());
 
         return suspensionMapperDto.toSuspensionDto(suspensionDao.updateSuspension(suspension));
     }
@@ -65,9 +66,13 @@ public class SuspensionServiceImpl implements SuspensionService{
     @Override
     public SuspensionDto liftSuspension(LiftSuspensionDto liftSuspensionDto) {
         Suspension suspension = suspensionDao.getSuspension(liftSuspensionDto.getSuspensionId());
-        suspension.setSuspensionLiftReason(liftSuspensionDto.getSuspensionListReason());
+        suspension.setSuspensionLiftReason(liftSuspensionDto.getSuspensionLiftReason());
         suspension.setSuspensionLifted(true);
         suspension.setSuspensionLiftedAt(LocalDateTime.now());
+
+        User user = suspension.getUser();
+        user.setSuspended(false);
+        suspension.setUser(user);
 
         return suspensionMapperDto.toSuspensionDto(suspensionDao.updateSuspension(suspension));
     }
@@ -80,5 +85,10 @@ public class SuspensionServiceImpl implements SuspensionService{
     @Override
     public List<SuspensionDto> getUserSuspensions(Integer userId) {
         return suspensionDao.getUserSuspensions(userId).stream().map(suspensionMapperDto::toSuspensionDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SuspensionDto> getAllSuspensions() {
+        return suspensionDao.getAllSuspensions().stream().map(suspensionMapperDto::toSuspensionDto).collect(Collectors.toList());
     }
 }

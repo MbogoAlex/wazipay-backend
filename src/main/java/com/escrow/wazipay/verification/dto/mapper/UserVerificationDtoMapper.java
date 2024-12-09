@@ -2,6 +2,7 @@ package com.escrow.wazipay.verification.dto.mapper;
 
 import com.escrow.wazipay.media.entity.Settings;
 import com.escrow.wazipay.media.entity.VerificationImage;
+import com.escrow.wazipay.user.entity.User;
 import com.escrow.wazipay.verification.dto.UserVerificationDto;
 import com.escrow.wazipay.verification.entity.UserVerification;
 import java.util.List;
@@ -35,6 +36,30 @@ public class UserVerificationDtoMapper {
                 backIdUrl = domain + "/images/" + images.get(1).getName();
             }
         }
+
+
+        return UserVerificationDto.builder()
+                .verificationId(userVerification.getId())
+                .userId(userVerification.getUser().getId())
+                .username(userVerification.getUser().getName())
+                .phoneNumber(userVerification.getUser().getPhoneNumber())
+                .email(userVerification.getUser().getEmail())
+                .idFront(frontIdUrl)
+                .idBack(backIdUrl)
+                .verificationStatus(userVerification.getUser().getVerificationStatus())
+                .verifiedAt(userVerification.getUser().getVerifiedAt())
+                .build();
+    }
+
+    public UserVerificationDto toUserVerificationDto2(User user, Settings settings) {
+        String domain = settings.getValue();
+        UserVerification userVerification = user.getUserVerification();
+        String frontIdUrl;
+        String backIdUrl;
+
+        List<VerificationImage> images = userVerification.getIdImages();
+        frontIdUrl = domain + "/images/" + images.get(0).getName();
+        backIdUrl = domain + "/images/" + images.get(1).getName();
 
 
         return UserVerificationDto.builder()

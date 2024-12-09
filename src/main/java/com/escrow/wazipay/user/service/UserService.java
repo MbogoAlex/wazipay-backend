@@ -1,6 +1,8 @@
 package com.escrow.wazipay.user.service;
 
 import com.escrow.wazipay.user.dto.*;
+import com.escrow.wazipay.verification.dto.ApproveUserDto;
+
 import java.util.List;
 
 public interface UserService {

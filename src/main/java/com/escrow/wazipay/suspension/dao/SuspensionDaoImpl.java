@@ -41,4 +41,10 @@ public class SuspensionDaoImpl implements SuspensionDao{
         query.setParameter("id", userId);
         return query.getResultList();
     }
+
+    @Override
+    public List<Suspension> getAllSuspensions() {
+        TypedQuery<Suspension> query = entityManager.createQuery("from Suspension", Suspension.class);
+        return query.getResultList();
+    }
 }

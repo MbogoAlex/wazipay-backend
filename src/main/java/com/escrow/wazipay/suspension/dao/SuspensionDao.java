@@ -15,4 +15,6 @@ public interface SuspensionDao {
     Suspension getSuspension(Integer id);
 
     List<Suspension> getUserSuspensions(Integer userId);
+
+    List<Suspension> getAllSuspensions();
 }
