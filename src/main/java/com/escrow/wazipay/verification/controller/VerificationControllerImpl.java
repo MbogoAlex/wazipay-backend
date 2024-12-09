@@ -36,4 +36,9 @@ public class VerificationControllerImpl implements VerificationController{
             return buildResponse.createResponse(null, null, "Upload required documents", HttpStatus.LENGTH_REQUIRED);
         }
     }
+    @GetMapping("verificationstatus/{userId}")
+    @Override
+    public ResponseEntity<Response> getUserVerificationDetails(@PathVariable(name = "userId") Integer userId) {
+        return buildResponse.createResponse("user", userVerificationService.getUserVerificationDetails(userId), "Verification details fetched", HttpStatus.OK);
+    }
 }

@@ -42,6 +42,7 @@ public class UserVerificationServiceImpl implements UserVerificationService{
     public UserVerificationDto uploadUserVerificationDetails(VerifyUserDto verifyUserDto, MultipartFile[] images) throws IOException {
         List<VerificationImage> idImages = new ArrayList<>();
         System.out.println("GETTING USER");
+        System.out.println("ARRAY LENGTH: "+ images.length);
         User user = userDao.getUserByUserId(verifyUserDto.getUserId());
         String basePath = settingsDao.findBySettingsKey("imagePath").getValue();
         Settings domain = settingsDao.findBySettingsKey("domain");
@@ -96,6 +97,12 @@ public class UserVerificationServiceImpl implements UserVerificationService{
 
         // Persist UserVerification object
         return userVerificationDtoMapper.toUserverificationDto(userVerificationDao.uploadUserVerificationDetails(userVerification), domain);
+    }
+
+    @Override
+    public UserVerificationDto getUserVerificationDetails(Integer userId) {
+        Settings settings = settingsDao.findBySettingsKey("domain");
+        return userVerificationDtoMapper.toUserverificationDto(userVerificationDao.getUserVerificationDetails(userId), settings);
     }
 
 

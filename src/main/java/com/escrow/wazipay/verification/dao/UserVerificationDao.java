@@ -4,4 +4,6 @@ import com.escrow.wazipay.verification.entity.UserVerification;
 
 public interface UserVerificationDao {
     UserVerification uploadUserVerificationDetails(UserVerification userVerification);
+
+    UserVerification getUserVerificationDetails(Integer userId);
 }

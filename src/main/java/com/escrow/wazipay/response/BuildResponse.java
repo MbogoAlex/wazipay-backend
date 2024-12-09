@@ -10,7 +10,7 @@ public class BuildResponse {
         return ResponseEntity.status(status)
                 .body(Response.builder()
                         .timestamp(System.currentTimeMillis())
-                        .data(data == null ? null : of(desc, data))
+                        .data(data) // Directly use the passed data
                         .message(message)
                         .status(status)
                         .statusCode(status.value())

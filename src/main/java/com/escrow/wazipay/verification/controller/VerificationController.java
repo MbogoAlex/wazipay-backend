@@ -7,4 +7,5 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface VerificationController {
     ResponseEntity<Response> uploadUserVerificationDetails(VerifyUserDto verifyUserDto, MultipartFile[] images);
+    ResponseEntity<Response> getUserVerificationDetails(Integer userId);
 }

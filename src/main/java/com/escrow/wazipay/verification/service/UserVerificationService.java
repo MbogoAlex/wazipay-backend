@@ -8,4 +8,6 @@ import java.io.IOException;
 
 public interface UserVerificationService {
     UserVerificationDto uploadUserVerificationDetails(VerifyUserDto verifyUserDto, MultipartFile[] images) throws IOException;
+
+    UserVerificationDto getUserVerificationDetails(Integer userId);
 }
