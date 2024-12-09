@@ -19,6 +19,7 @@ public class UserDtoMapper {
                 .phoneNumber(user.getPhoneNumber())
                 .roles(user.getRoles().stream().map(userRole -> userRole.getRole().name()).collect(Collectors.toList()))
                 .createdAt(user.getCreatedAt())
+                .verified(user.getVerified())
                 .verifiedAt(user.getVerifiedAt())
                 .verificationStatus(user.getVerificationStatus())
                 .verificationDetails(userVerificationDtoMapper.toUserverificationDto(user.getUserVerification(), settings))

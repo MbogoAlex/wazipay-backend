@@ -46,6 +46,7 @@ public class UserServiceImpl implements UserService{
                 .name(userRegistrationDto.getName())
                 .email(userRegistrationDto.getEmail())
                 .phoneNumber(userRegistrationDto.getPhoneNumber())
+                .verified(false)
                 .verificationStatus(VerificationStatus.NOT_VERIFIED)
                 .createdAt(LocalDateTime.now())
                 .archived(false)

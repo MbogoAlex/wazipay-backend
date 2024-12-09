@@ -21,6 +21,7 @@ public class UserDto {
     private String email;
     private List<String> roles;
     private LocalDateTime createdAt;
+    private Boolean verified;
     private LocalDateTime verifiedAt;
     private VerificationStatus verificationStatus;
     private UserVerificationDto verificationDetails;

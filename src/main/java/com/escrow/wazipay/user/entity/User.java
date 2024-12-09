@@ -33,6 +33,7 @@ public class User {
     private Boolean archived;
     @Column(name = "archived_at")
     private LocalDateTime archivedAt;
+    private Boolean verified;
     @Column(name = "verified_at")
     private LocalDateTime verifiedAt;
 
