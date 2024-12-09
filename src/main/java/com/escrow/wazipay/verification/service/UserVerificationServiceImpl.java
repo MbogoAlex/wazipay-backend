@@ -8,7 +8,6 @@ import com.escrow.wazipay.user.entity.User;
 import com.escrow.wazipay.user.entity.VerificationStatus;
 import com.escrow.wazipay.verification.dao.UserVerificationDao;
 import com.escrow.wazipay.verification.dto.UserVerificationDto;
-import com.escrow.wazipay.verification.dto.VerifyUserDto;
 import com.escrow.wazipay.verification.dto.mapper.UserVerificationDtoMapper;
 import com.escrow.wazipay.verification.entity.UserVerification;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +38,11 @@ public class UserVerificationServiceImpl implements UserVerificationService{
     }
     @Transactional
     @Override
-    public UserVerificationDto uploadUserVerificationDetails(VerifyUserDto verifyUserDto, MultipartFile[] images) throws IOException {
+    public UserVerificationDto uploadUserVerificationDetails(Integer userId, MultipartFile[] images) throws IOException {
         List<VerificationImage> idImages = new ArrayList<>();
         System.out.println("GETTING USER");
         System.out.println("ARRAY LENGTH: "+ images.length);
-        User user = userDao.getUserByUserId(verifyUserDto.getUserId());
+        User user = userDao.getUserByUserId(userId);
         String basePath = settingsDao.findBySettingsKey("imagePath").getValue();
         Settings domain = settingsDao.findBySettingsKey("domain");
 
@@ -77,8 +76,6 @@ public class UserVerificationServiceImpl implements UserVerificationService{
 
         // Build and link UserVerification object
         UserVerification userVerification = UserVerification.builder()
-                .businessName(verifyUserDto.getBusinessName())
-                .businessLocation(verifyUserDto.getBusinessLocation())
                 .user(user) // Important: Set the user here
                 .build();
 

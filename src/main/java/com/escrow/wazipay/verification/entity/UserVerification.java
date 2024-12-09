@@ -19,8 +19,6 @@ public class UserVerification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String businessName;
-    private String businessLocation;
 
     @OneToMany(mappedBy = "userVerification", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<VerificationImage> idImages;

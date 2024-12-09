@@ -22,8 +22,6 @@ public class UserVerificationDtoMapper {
                     .email(null)
                     .idFront(null)
                     .idBack(null)
-                    .businessName(null)
-                    .businessLocation(null)
                     .verificationStatus(null)
                     .verifiedAt(null)
                     .build();
@@ -47,8 +45,6 @@ public class UserVerificationDtoMapper {
                 .email(userVerification.getUser().getEmail())
                 .idFront(frontIdUrl)
                 .idBack(backIdUrl)
-                .businessName(userVerification.getBusinessName())
-                .businessLocation(userVerification.getBusinessLocation())
                 .verificationStatus(userVerification.getUser().getVerificationStatus())
                 .verifiedAt(userVerification.getUser().getVerifiedAt())
                 .build();

@@ -2,7 +2,6 @@ package com.escrow.wazipay.verification.controller;
 
 import com.escrow.wazipay.response.BuildResponse;
 import com.escrow.wazipay.response.Response;
-import com.escrow.wazipay.verification.dto.VerifyUserDto;
 import com.escrow.wazipay.verification.service.UserVerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,15 +19,15 @@ public class VerificationControllerImpl implements VerificationController{
     public VerificationControllerImpl(UserVerificationService userVerificationService) {
         this.userVerificationService = userVerificationService;
     }
-    @PostMapping("verificationrequest")
+    @PostMapping("verificationrequest/{userId}")
     @Override
     public ResponseEntity<Response> uploadUserVerificationDetails(
-            @RequestPart("data") VerifyUserDto verifyUserDto,
+            @PathVariable("userId") Integer userId,
             @RequestPart("file") MultipartFile[] images
     ) {
         if(images != null && images.length > 1) {
             try {
-               return buildResponse.createResponse("user", userVerificationService.uploadUserVerificationDetails(verifyUserDto, images), "Verification details uploaded", HttpStatus.CREATED);
+               return buildResponse.createResponse("user", userVerificationService.uploadUserVerificationDetails(userId, images), "Verification details uploaded", HttpStatus.CREATED);
             } catch (Exception e) {
                 return buildResponse.createResponse(null, null, e.toString(), HttpStatus.EXPECTATION_FAILED);
             }

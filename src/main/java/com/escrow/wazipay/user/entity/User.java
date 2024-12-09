@@ -1,5 +1,6 @@
 package com.escrow.wazipay.user.entity;
 
+import com.escrow.wazipay.business.entity.Business;
 import com.escrow.wazipay.verification.entity.UserVerification;
 import jakarta.persistence.*;
 import lombok.*;
@@ -40,4 +41,7 @@ public class User {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private UserVerification userVerification;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Business> businesses = new ArrayList<>();
 }

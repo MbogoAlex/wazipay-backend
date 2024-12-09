@@ -20,8 +20,6 @@ public class UserVerificationDto {
     private String email;
     private String idFront;
     private String idBack;
-    private String businessName;
-    private String businessLocation;
     private VerificationStatus verificationStatus;
     private LocalDateTime verifiedAt;
 }

@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService{
                 .build();
 
         userRole.setUser(user);
-        userRole.setRole(UserRoleEnum.valueOf(userRegistrationDto.getRole().toUpperCase()));
+        userRole.setRole(UserRoleEnum.BUYER);
         userRoles.add(userRole);
         user.setRoles(userRoles);
 
