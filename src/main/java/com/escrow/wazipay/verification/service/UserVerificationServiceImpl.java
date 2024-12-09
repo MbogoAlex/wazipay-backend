@@ -1,17 +1,17 @@
 package com.escrow.wazipay.verification.service;
 
+import com.escrow.wazipay.mail.MailService;
+import com.escrow.wazipay.mail.MailStructure;
 import com.escrow.wazipay.media.dao.SettingsDao;
 import com.escrow.wazipay.media.entity.Settings;
 import com.escrow.wazipay.media.entity.VerificationImage;
 import com.escrow.wazipay.user.dao.UserDao;
-import com.escrow.wazipay.user.dto.UserDto;
-import com.escrow.wazipay.user.dto.mapper.UserDtoMapper;
+import com.escrow.wazipay.user.entity.User;
 import com.escrow.wazipay.user.entity.UserRole;
 import com.escrow.wazipay.user.entity.UserRoleEnum;
-import com.escrow.wazipay.verification.dto.ApproveUserDto;
-import com.escrow.wazipay.user.entity.User;
 import com.escrow.wazipay.user.entity.VerificationStatus;
 import com.escrow.wazipay.verification.dao.UserVerificationDao;
+import com.escrow.wazipay.verification.dto.ApproveUserDto;
 import com.escrow.wazipay.verification.dto.RejectUserDto;
 import com.escrow.wazipay.verification.dto.UserVerificationDto;
 import com.escrow.wazipay.verification.dto.mapper.UserVerificationDtoMapper;
@@ -34,15 +34,20 @@ public class UserVerificationServiceImpl implements UserVerificationService{
     private final UserVerificationDao userVerificationDao;
     private final SettingsDao settingsDao;
     private final UserDao userDao;
+    private final MailService mailService;
+
+
     @Autowired
     public UserVerificationServiceImpl(
             UserVerificationDao userVerificationDao,
             SettingsDao settingsDao,
-            UserDao userDao
+            UserDao userDao,
+            MailService mailService
     ) {
         this.userVerificationDao = userVerificationDao;
         this.settingsDao = settingsDao;
         this.userDao = userDao;
+        this.mailService = mailService;
     }
     @Transactional
     @Override
@@ -100,6 +105,24 @@ public class UserVerificationServiceImpl implements UserVerificationService{
         // Link verification object to the user
         user.setUserVerification(userVerification);
 
+        MailStructure mailStructure1 = MailStructure
+                .builder()
+                        .email("gitaumbogo3@gmail.com")
+                                .subject("Account verification")
+                                        .message("We have received your verification documents and you will be notified when verification is complete.")
+                                                .build();
+
+        mailService.sendEmail(mailStructure1);
+
+        MailStructure mailStructure2 = MailStructure
+                .builder()
+                .email("gitaumbogo3@gmail.com")
+                .subject("Account verification Request")
+                .message("A new user has submitted his documents for verification.")
+                .build();
+
+        mailService.sendEmail(mailStructure2);
+
         // Persist UserVerification object
         return userVerificationDtoMapper.toUserverificationDto(userVerificationDao.uploadUserVerificationDetails(userVerification), domain);
     }
@@ -125,6 +148,16 @@ public class UserVerificationServiceImpl implements UserVerificationService{
         user.setVerificationStatus(VerificationStatus.VERIFIED);
         user.getRoles().add(userRole);
         user.setVerifiedAt(LocalDateTime.now());
+
+        MailStructure mailStructure = MailStructure
+                .builder()
+                .email(user.getEmail())
+                .subject("Account verification")
+                .message(userDto.getMessage())
+                .build();
+
+        mailService.sendEmail(mailStructure);
+
         return userVerificationDtoMapper.toUserVerificationDto2(userDao.updateUser(user), settings);
     }
     @Transactional
@@ -135,6 +168,15 @@ public class UserVerificationServiceImpl implements UserVerificationService{
 
         user.setVerified(false);
         user.setVerificationStatus(VerificationStatus.REJECTED);
+
+        MailStructure mailStructure = MailStructure
+                .builder()
+                .email(user.getEmail())
+                .subject("Account verification")
+                .message(rejectUserDto.getMessage())
+                .build();
+
+        mailService.sendEmail(mailStructure);
 
         return userVerificationDtoMapper.toUserVerificationDto2(userDao.updateUser(user), settings);
     }

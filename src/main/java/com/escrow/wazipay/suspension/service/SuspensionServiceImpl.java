@@ -1,5 +1,7 @@
 package com.escrow.wazipay.suspension.service;
 
+import com.escrow.wazipay.mail.MailService;
+import com.escrow.wazipay.mail.MailStructure;
 import com.escrow.wazipay.suspension.dao.SuspensionDao;
 import com.escrow.wazipay.suspension.dto.LiftSuspensionDto;
 import com.escrow.wazipay.suspension.dto.SuspendUserDto;
@@ -22,13 +24,17 @@ public class SuspensionServiceImpl implements SuspensionService{
     private final SuspensionMapperDto suspensionMapperDto = new SuspensionMapperDto();
     private final SuspensionDao suspensionDao;
     private final UserDao userDao;
+
+    private final MailService mailService;
     @Autowired
     public SuspensionServiceImpl(
             SuspensionDao suspensionDao,
-            UserDao userDao
+            UserDao userDao,
+            MailService mailService
     ) {
         this.suspensionDao = suspensionDao;
         this.userDao = userDao;
+        this.mailService = mailService;
     }
     @Transactional
     @Override
@@ -43,6 +49,15 @@ public class SuspensionServiceImpl implements SuspensionService{
                 .suspensionLifted(false)
                 .user(user)
                 .build();
+
+        MailStructure mailStructure = MailStructure
+                .builder()
+                .email(user.getEmail())
+                .subject("Account Suspension")
+                .message(suspendUserDto.getSuspensionReason())
+                .build();
+
+        mailService.sendEmail(mailStructure);
 
         return suspensionMapperDto.toSuspensionDto(suspensionDao.suspendUser(suspension));
     }
@@ -73,6 +88,15 @@ public class SuspensionServiceImpl implements SuspensionService{
         User user = suspension.getUser();
         user.setSuspended(false);
         suspension.setUser(user);
+
+        MailStructure mailStructure = MailStructure
+                .builder()
+                .email("gitaumbogo3@gmail.com")
+                .subject("Account Suspension")
+                .message(liftSuspensionDto.getSuspensionLiftReason())
+                .build();
+
+        mailService.sendEmail(mailStructure);
 
         return suspensionMapperDto.toSuspensionDto(suspensionDao.updateSuspension(suspension));
     }
