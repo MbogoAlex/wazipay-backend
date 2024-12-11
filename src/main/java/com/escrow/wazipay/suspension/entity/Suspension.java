@@ -1,6 +1,6 @@
 package com.escrow.wazipay.suspension.entity;
 
-import com.escrow.wazipay.user.entity.User;
+import com.escrow.wazipay.user.entity.UserAccount;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,5 +30,5 @@ public class Suspension {
     private String suspensionLiftReason;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserAccount user;
 }

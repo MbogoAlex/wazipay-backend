@@ -5,7 +5,7 @@ import com.escrow.wazipay.media.entity.Settings;
 import com.escrow.wazipay.user.dao.UserDao;
 import com.escrow.wazipay.user.dto.*;
 import com.escrow.wazipay.user.dto.mapper.UserDtoMapper;
-import com.escrow.wazipay.user.entity.User;
+import com.escrow.wazipay.user.entity.UserAccount;
 import com.escrow.wazipay.user.entity.UserRole;
 import com.escrow.wazipay.user.entity.UserRoleEnum;
 import com.escrow.wazipay.user.entity.VerificationStatus;
@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService{
         Settings domain = settingsDao.findBySettingsKey("domain");
         List<UserRole> userRoles = new ArrayList<>();
         UserRole userRole = new UserRole();
-        User user = User.builder()
+        UserAccount user = UserAccount.builder()
                 .name(userRegistrationDto.getName())
                 .email(userRegistrationDto.getEmail())
                 .phoneNumber(userRegistrationDto.getPhoneNumber())
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDto updateUserGeneralDetails(UserUpdateDto userUpdateDto) {
         Settings domain = settingsDao.findBySettingsKey("domain");
-        User user = userDao.getUserByUserId(userUpdateDto.getUserId());
+        UserAccount user = userDao.getUserByUserId(userUpdateDto.getUserId());
         if(!user.getName().equalsIgnoreCase(userUpdateDto.getName())) {
             user.setName(userUpdateDto.getName());
         }
@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDto setUserPin(UserSetPinDto userSetPinDto) {
         Settings domain = settingsDao.findBySettingsKey("domain");
-        User user = userDao.getUserByUserId(userSetPinDto.getUserId());
+        UserAccount user = userDao.getUserByUserId(userSetPinDto.getUserId());
         user.setPin(passwordEncoder.encode(userSetPinDto.getPin()));
         return userDtoMapper.toUserDto(userDao.updateUser(user), domain);
     }
@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDto approveUser(ApproveUserDto userDto) {
         Settings settings = settingsDao.findBySettingsKey("domain");
-        User user = userDao.getUserByUserId(userDto.getApplicantId());
+        UserAccount user = userDao.getUserByUserId(userDto.getApplicantId());
         UserRole userRole = UserRole.builder()
                 .user(user)
                         .role(UserRoleEnum.valueOf(userDto.getRole().toUpperCase()))
@@ -133,7 +133,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDto disapproveUser(Integer userId) {
         Settings settings = settingsDao.findBySettingsKey("domain");
-        User user = userDao.getUserByUserId(userId);
+        UserAccount user = userDao.getUserByUserId(userId);
 
         user.setVerified(false);
         user.setVerificationStatus(VerificationStatus.REJECTED);

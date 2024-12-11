@@ -1,6 +1,6 @@
 package com.escrow.wazipay.business.entity;
 
-import com.escrow.wazipay.user.entity.User;
+import com.escrow.wazipay.user.entity.UserAccount;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,5 +35,5 @@ public class Business {
     private LocalDateTime archivedAt;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserAccount user;
 }

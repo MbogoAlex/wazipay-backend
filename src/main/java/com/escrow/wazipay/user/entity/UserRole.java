@@ -21,7 +21,7 @@ public class UserRole {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private UserAccount user;
 
     @Enumerated(EnumType.STRING)
     private UserRoleEnum role;

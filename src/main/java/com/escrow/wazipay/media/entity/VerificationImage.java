@@ -1,6 +1,6 @@
 package com.escrow.wazipay.media.entity;
 
-import com.escrow.wazipay.user.entity.User;
+import com.escrow.wazipay.user.entity.UserAccount;
 import com.escrow.wazipay.verification.entity.UserVerification;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,7 +21,7 @@ public class VerificationImage {
     private String name;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private UserAccount user;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "verification_id", nullable = false)
     private UserVerification userVerification;

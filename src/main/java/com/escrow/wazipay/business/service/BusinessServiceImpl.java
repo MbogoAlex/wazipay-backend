@@ -7,7 +7,7 @@ import com.escrow.wazipay.business.dto.UpdateBusinessDto;
 import com.escrow.wazipay.business.dto.mapper.BusinessDtoMapper;
 import com.escrow.wazipay.business.entity.Business;
 import com.escrow.wazipay.user.dao.UserDao;
-import com.escrow.wazipay.user.entity.User;
+import com.escrow.wazipay.user.entity.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +33,7 @@ public class BusinessServiceImpl implements BusinessService{
     @Transactional
     @Override
     public BusinessDto addBusiness(CreateBusinessDto newBusiness) {
-        User user = userDao.getUserByUserId(newBusiness.getUserId());
+        UserAccount user = userDao.getUserByUserId(newBusiness.getUserId());
 
         Business business = Business.builder()
                 .businessName(newBusiness.getBusinessName())

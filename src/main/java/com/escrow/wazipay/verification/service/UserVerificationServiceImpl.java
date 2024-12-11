@@ -6,7 +6,7 @@ import com.escrow.wazipay.media.dao.SettingsDao;
 import com.escrow.wazipay.media.entity.Settings;
 import com.escrow.wazipay.media.entity.VerificationImage;
 import com.escrow.wazipay.user.dao.UserDao;
-import com.escrow.wazipay.user.entity.User;
+import com.escrow.wazipay.user.entity.UserAccount;
 import com.escrow.wazipay.user.entity.UserRole;
 import com.escrow.wazipay.user.entity.UserRoleEnum;
 import com.escrow.wazipay.user.entity.VerificationStatus;
@@ -55,7 +55,7 @@ public class UserVerificationServiceImpl implements UserVerificationService{
         List<VerificationImage> idImages = new ArrayList<>();
         System.out.println("GETTING USER");
         System.out.println("ARRAY LENGTH: "+ images.length);
-        User user = userDao.getUserByUserId(userId);
+        UserAccount user = userDao.getUserByUserId(userId);
         String basePath = settingsDao.findBySettingsKey("imagePath").getValue();
         Settings domain = settingsDao.findBySettingsKey("domain");
 
@@ -137,7 +137,7 @@ public class UserVerificationServiceImpl implements UserVerificationService{
     @Override
     public UserVerificationDto approveUser(ApproveUserDto userDto) {
         Settings settings = settingsDao.findBySettingsKey("domain");
-        User user = userDao.getUserByUserId(userDto.getApplicantId());
+        UserAccount user = userDao.getUserByUserId(userDto.getApplicantId());
         UserRole userRole = UserRole.builder()
                 .user(user)
                 .role(UserRoleEnum.valueOf(userDto.getRole().toUpperCase()))
@@ -164,7 +164,7 @@ public class UserVerificationServiceImpl implements UserVerificationService{
     @Override
     public UserVerificationDto rejectUserVerification(RejectUserDto rejectUserDto) {
         Settings settings = settingsDao.findBySettingsKey("domain");
-        User user = userDao.getUserByUserId(rejectUserDto.getApplicantId());
+        UserAccount user = userDao.getUserByUserId(rejectUserDto.getApplicantId());
 
         user.setVerified(false);
         user.setVerificationStatus(VerificationStatus.REJECTED);

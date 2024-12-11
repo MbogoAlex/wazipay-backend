@@ -1,7 +1,7 @@
 package com.escrow.wazipay.delivery.entity;
 
 import com.escrow.wazipay.escrow.entity.EscrowTransaction;
-import com.escrow.wazipay.user.entity.User;
+import com.escrow.wazipay.user.entity.UserAccount;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,7 +25,7 @@ public class DeliveryAssignment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "delivery_man_id", nullable = false) // Foreign key to User table
-    private User deliveryMan;
+    private UserAccount deliveryMan;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

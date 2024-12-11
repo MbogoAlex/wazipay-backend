@@ -10,7 +10,7 @@ import com.escrow.wazipay.suspension.dto.SuspensionReasonUpdateDto;
 import com.escrow.wazipay.suspension.dto.mapper.SuspensionMapperDto;
 import com.escrow.wazipay.suspension.entity.Suspension;
 import com.escrow.wazipay.user.dao.UserDao;
-import com.escrow.wazipay.user.entity.User;
+import com.escrow.wazipay.user.entity.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +39,7 @@ public class SuspensionServiceImpl implements SuspensionService{
     @Transactional
     @Override
     public SuspensionDto suspendUser(SuspendUserDto suspendUserDto) {
-        User user = userDao.getUserByUserId(suspendUserDto.getUserId());
+        UserAccount user = userDao.getUserByUserId(suspendUserDto.getUserId());
 
         user.setSuspended(true);
 
@@ -85,7 +85,7 @@ public class SuspensionServiceImpl implements SuspensionService{
         suspension.setSuspensionLifted(true);
         suspension.setSuspensionLiftedAt(LocalDateTime.now());
 
-        User user = suspension.getUser();
+        UserAccount user = suspension.getUser();
         user.setSuspended(false);
         suspension.setUser(user);
 

@@ -2,7 +2,7 @@ package com.escrow.wazipay.verification.dto.mapper;
 
 import com.escrow.wazipay.media.entity.Settings;
 import com.escrow.wazipay.media.entity.VerificationImage;
-import com.escrow.wazipay.user.entity.User;
+import com.escrow.wazipay.user.entity.UserAccount;
 import com.escrow.wazipay.verification.dto.UserVerificationDto;
 import com.escrow.wazipay.verification.entity.UserVerification;
 import java.util.List;
@@ -51,7 +51,7 @@ public class UserVerificationDtoMapper {
                 .build();
     }
 
-    public UserVerificationDto toUserVerificationDto2(User user, Settings settings) {
+    public UserVerificationDto toUserVerificationDto2(UserAccount user, Settings settings) {
         String domain = settings.getValue();
         UserVerification userVerification = user.getUserVerification();
         String frontIdUrl;

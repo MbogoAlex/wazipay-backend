@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class RejectUserDto {
-    private Integer adminId;
     private Integer applicantId;
     private String message;
 }

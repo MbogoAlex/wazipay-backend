@@ -1,7 +1,7 @@
 package com.escrow.wazipay.escrow.entity;
 
 import com.escrow.wazipay.delivery.entity.DeliveryAssignment;
-import com.escrow.wazipay.user.entity.User;
+import com.escrow.wazipay.user.entity.UserAccount;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,11 +24,11 @@ public class EscrowTransaction {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "buyer_id", nullable = false) // Foreign key to User table
-    private User buyer;
+    private UserAccount buyer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id", nullable = false) // Foreign key to User table
-    private User seller;
+    private UserAccount seller;
 
     @Column(nullable = false)
     private Double amount;

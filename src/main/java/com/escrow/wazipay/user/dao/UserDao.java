@@ -1,16 +1,16 @@
 package com.escrow.wazipay.user.dao;
 
-import com.escrow.wazipay.user.entity.User;
+import com.escrow.wazipay.user.entity.UserAccount;
 import java.util.List;
 
 
 public interface UserDao {
-    User createAccount(User user);
-    User updateUser(User user);
-    User getUserByUserId(Integer userId);
-    User getUserByPhoneNumber(String phoneNumber);
-    User getUserByEmail(String email);
+    UserAccount createAccount(UserAccount user);
+    UserAccount updateUser(UserAccount user);
+    UserAccount getUserByUserId(Integer userId);
+    UserAccount getUserByPhoneNumber(String phoneNumber);
+    UserAccount getUserByEmail(String email);
     Boolean existsByPhoneNumber(String phoneNumber);
     Boolean existsByEmail(String email);
-    List<User> getAllUsers();
+    List<UserAccount> getAllUsers();
 }

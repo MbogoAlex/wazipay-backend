@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ApproveUserDto {
-    private Integer adminId;
     private Integer applicantId;
     private String role;
     private String message;

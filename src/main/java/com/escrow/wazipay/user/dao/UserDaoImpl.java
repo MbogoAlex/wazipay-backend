@@ -1,6 +1,6 @@
 package com.escrow.wazipay.user.dao;
 
-import com.escrow.wazipay.user.entity.User;
+import com.escrow.wazipay.user.entity.UserAccount;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,56 +19,56 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    public User createAccount(User user) {
+    public UserAccount createAccount(UserAccount user) {
         entityManager.persist(user);
         return user;
     }
 
     @Override
-    public User updateUser(User user) {
+    public UserAccount updateUser(UserAccount user) {
         entityManager.merge(user);
         return user;
     }
 
 
     @Override
-    public User getUserByUserId(Integer userId) {
-        TypedQuery<User> query = entityManager.createQuery("from User where id = :id", User.class);
+    public UserAccount getUserByUserId(Integer userId) {
+        TypedQuery<UserAccount> query = entityManager.createQuery("from UserAccount where id = :id", UserAccount.class);
         query.setParameter("id", userId);
         return query.getSingleResult();
     }
 
     @Override
-    public User getUserByPhoneNumber(String phoneNumber) {
-        TypedQuery<User> query = entityManager.createQuery("from User where phoneNumber = :phoneNumber", User.class);
+    public UserAccount getUserByPhoneNumber(String phoneNumber) {
+        TypedQuery<UserAccount> query = entityManager.createQuery("from UserAccount where phoneNumber = :phoneNumber", UserAccount.class);
         query.setParameter("phoneNumber", phoneNumber);
         return query.getSingleResult();
     }
 
     @Override
-    public User getUserByEmail(String email) {
-        TypedQuery<User> query = entityManager.createQuery("from User where email = :email", User.class);
+    public UserAccount getUserByEmail(String email) {
+        TypedQuery<UserAccount> query = entityManager.createQuery("from UserAccount where email = :email", UserAccount.class);
         query.setParameter("email", email);
         return query.getSingleResult();
     }
 
     @Override
     public Boolean existsByPhoneNumber(String phoneNumber) {
-        TypedQuery<User> query = entityManager.createQuery("from User where phoneNumber = :phoneNumber", User.class);
+        TypedQuery<UserAccount> query = entityManager.createQuery("from UserAccount where phoneNumber = :phoneNumber", UserAccount.class);
         query.setParameter("phoneNumber", phoneNumber);
         return !query.getResultList().isEmpty();
     }
 
     @Override
     public Boolean existsByEmail(String email) {
-        TypedQuery<User> query = entityManager.createQuery("from User where email = :email", User.class);
+        TypedQuery<UserAccount> query = entityManager.createQuery("from UserAccount where email = :email", UserAccount.class);
         query.setParameter("email", email);
         return !query.getResultList().isEmpty();
     }
 
     @Override
-    public List<User> getAllUsers() {
-        TypedQuery<User> query = entityManager.createQuery("from User", User.class);
+    public List<UserAccount> getAllUsers() {
+        TypedQuery<UserAccount> query = entityManager.createQuery("from User", UserAccount.class);
         return query.getResultList();
     }
 }

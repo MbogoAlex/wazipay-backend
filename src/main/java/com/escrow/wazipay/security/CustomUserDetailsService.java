@@ -1,7 +1,7 @@
 package com.escrow.wazipay.security;
 
 import com.escrow.wazipay.user.dao.UserDao;
-import com.escrow.wazipay.user.entity.User;
+import com.escrow.wazipay.user.entity.UserAccount;
 import com.escrow.wazipay.user.entity.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,7 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // Fetch the user by phone number
-        User user = userDao.getUserByPhoneNumber(username);
+        UserAccount user = userDao.getUserByPhoneNumber(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found with phone number: " + username);
         }
