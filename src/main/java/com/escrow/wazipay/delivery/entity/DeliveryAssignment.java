@@ -36,4 +36,10 @@ public class DeliveryAssignment {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @Column(name = "deliver_to")
+    private String deliveryLocation;
+
+    @Column(name = "delivered_at")
+    private LocalDateTime deliveredAt;
 }

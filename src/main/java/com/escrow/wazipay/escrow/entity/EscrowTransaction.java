@@ -21,6 +21,8 @@ public class EscrowTransaction {
 
     @Column(name = "purchase_code", nullable = false)
     private String purchaseCode;
+    private String productName;
+    private String productDescription;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "buyer_id", nullable = false) // Foreign key to User table
@@ -32,6 +34,7 @@ public class EscrowTransaction {
 
     @Column(nullable = false)
     private Double amount;
+    private Boolean paid;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

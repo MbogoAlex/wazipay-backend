@@ -2,7 +2,10 @@ package com.escrow.wazipay.user.entity;
 
 import com.escrow.wazipay.business.entity.Business;
 import com.escrow.wazipay.suspension.entity.Suspension;
+import com.escrow.wazipay.userWallet.entity.UserWallet;
+import com.escrow.wazipay.userWallet.entity.UserWalletTransaction;
 import com.escrow.wazipay.verification.entity.UserVerification;
+import com.escrow.wazipay.wazipayWallet.entity.WazipayWalletTransaction;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -50,4 +53,11 @@ public class UserAccount {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Business> businesses = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<WazipayWalletTransaction> wazipayWalletTransactions = new ArrayList<>();
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private UserWallet userWallet;
+
 }
