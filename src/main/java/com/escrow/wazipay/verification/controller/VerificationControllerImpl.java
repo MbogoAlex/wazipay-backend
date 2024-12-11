@@ -30,15 +30,17 @@ public class VerificationControllerImpl implements VerificationController{
         this.userVerificationService = userVerificationService;
         this.userService = userService;
     }
-    @PostMapping("verificationrequest/{userId}")
+    @PostMapping("verificationrequest")
     @Override
     public ResponseEntity<Response> uploadUserVerificationDetails(
-            @PathVariable("userId") Integer userId,
-            @RequestPart("file") MultipartFile[] images
+            @RequestPart("file") MultipartFile[] images,
+            @AuthenticationPrincipal User user
     ) {
+        UserDto userDto = userService.getUserByPhoneNumber(user.getUsername());
+
         if(images != null && images.length > 1) {
             try {
-               return buildResponse.createResponse("user", userVerificationService.uploadUserVerificationDetails(userId, images), "Verification details uploaded", HttpStatus.CREATED);
+               return buildResponse.createResponse("user", userVerificationService.uploadUserVerificationDetails(userDto.getUserId(), images), "Verification details uploaded", HttpStatus.CREATED);
             } catch (Exception e) {
                 return buildResponse.createResponse(null, null, e.toString(), HttpStatus.EXPECTATION_FAILED);
             }

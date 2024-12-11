@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface VerificationController {
-    ResponseEntity<Response> uploadUserVerificationDetails(Integer userId, MultipartFile[] images);
+    ResponseEntity<Response> uploadUserVerificationDetails(MultipartFile[] images, User user);
     ResponseEntity<Response> getUserVerificationDetails(Integer userId, User user);
 
     ResponseEntity<Response> approveUser(ApproveUserDto approveUserDto, User user);
