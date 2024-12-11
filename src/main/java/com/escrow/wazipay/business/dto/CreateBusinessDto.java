@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CreateBusinessDto {
-    private Integer userId;
     private String businessName;
     private String businessDescription;
     private String businessLocation;

@@ -10,6 +10,8 @@ import com.escrow.wazipay.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,17 +32,19 @@ public class BusinessControllerImpl implements BusinessController{
     @PostMapping("business")
     @Override
     public ResponseEntity<Response> addBusiness(
-            @RequestBody CreateBusinessDto newBusiness
-    ) {
-        UserDto user = userService.getUserByUserId(newBusiness.getUserId());
+            @RequestBody CreateBusinessDto newBusiness,
+            @AuthenticationPrincipal User user
+            ) {
+
+        UserDto userDto = userService.getUserByPhoneNumber(user.getUsername());
 
 
 
-        if(user.getVerified()) {
-            if(user.getSuspended()) {
+        if(userDto.getVerified()) {
+            if(userDto.getSuspended()) {
                 return buildResponse.createResponse("business", "User is suspended", "Failed to add business", HttpStatus.FORBIDDEN);
             } else {
-                return buildResponse.createResponse("business", businessService.addBusiness(newBusiness), "Business added", HttpStatus.CREATED);
+                return buildResponse.createResponse("business", businessService.addBusiness(newBusiness, userDto.getUserId()), "Business added", HttpStatus.CREATED);
             }
         } else {
             return buildResponse.createResponse("business", "User is not yet verified", "Failed to add business", HttpStatus.FORBIDDEN);

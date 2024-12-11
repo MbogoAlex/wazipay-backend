@@ -32,8 +32,8 @@ public class BusinessServiceImpl implements BusinessService{
 
     @Transactional
     @Override
-    public BusinessDto addBusiness(CreateBusinessDto newBusiness) {
-        UserAccount user = userDao.getUserByUserId(newBusiness.getUserId());
+    public BusinessDto addBusiness(CreateBusinessDto newBusiness, Integer userId) {
+        UserAccount user = userDao.getUserByUserId(userId);
 
         Business business = Business.builder()
                 .businessName(newBusiness.getBusinessName())
