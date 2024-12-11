@@ -12,6 +12,8 @@ import com.escrow.wazipay.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -30,10 +32,19 @@ public class SuspensionControllerImpl implements SuspensionController{
     }
     @PostMapping("suspension")
     @Override
-    public ResponseEntity<Response> suspendUser(@RequestBody SuspendUserDto suspendUserDto) {
-        UserDto user = userService.getUserByUserId(suspendUserDto.getAdminId());
-        if(!user.getSuspended()) {
-            if(user.getRoles().contains("ADMIN")) {
+    public ResponseEntity<Response> suspendUser(
+            @RequestBody SuspendUserDto suspendUserDto,
+            @AuthenticationPrincipal User user
+    ) {
+        boolean isAdmin = user.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ADMIN"));
+
+        UserDto userToSuspend = userService.getUserByUserId(suspendUserDto.getUserId());
+
+        boolean isSuspended = userToSuspend.getSuspended();
+
+        if(isSuspended) {
+            if(isAdmin) {
                 return buildResponse.createResponse("suspension", suspensionService.suspendUser(suspendUserDto), "User suspended", HttpStatus.CREATED);
             } else {
                 return buildResponse.createResponse("suspension", "You are forbidden to do this action", "FAIL", HttpStatus.FORBIDDEN);
@@ -44,9 +55,15 @@ public class SuspensionControllerImpl implements SuspensionController{
     }
     @PutMapping("suspension/reason")
     @Override
-    public ResponseEntity<Response> updateSuspensionReason(@RequestBody SuspensionReasonUpdateDto suspensionDto) {
-        UserDto user = userService.getUserByUserId(suspensionDto.getAdminId());
-        if(user.getRoles().contains("ADMIN")) {
+    public ResponseEntity<Response> updateSuspensionReason(
+            @RequestBody SuspensionReasonUpdateDto suspensionDto,
+            @AuthenticationPrincipal User user
+    ) {
+
+        boolean isAdmin = user.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ADMIN"));
+
+        if(isAdmin) {
             return buildResponse.createResponse("suspension", suspensionService.updateSuspensionReason(suspensionDto), "Suspension reason updated", HttpStatus.OK);
         } else {
             return buildResponse.createResponse("suspension", "You are forbidden to do this action", "FAIL", HttpStatus.FORBIDDEN);
@@ -54,9 +71,14 @@ public class SuspensionControllerImpl implements SuspensionController{
     }
     @PutMapping("suspension/lift/reason")
     @Override
-    public ResponseEntity<Response> updateSuspensionLiftReason(@RequestBody LiftSuspensionDto liftSuspensionDto) {
-        UserDto user = userService.getUserByUserId(liftSuspensionDto.getAdminId());
-        if(user.getRoles().contains("ADMIN")) {
+    public ResponseEntity<Response> updateSuspensionLiftReason(
+            @RequestBody LiftSuspensionDto liftSuspensionDto,
+            @AuthenticationPrincipal User user
+    ) {
+        boolean isAdmin = user.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ADMIN"));
+
+        if(isAdmin) {
             return buildResponse.createResponse("suspension", suspensionService.updateSuspensionLiftReason(liftSuspensionDto), "Suspension lift reason updated", HttpStatus.OK);
         } else {
             return buildResponse.createResponse("suspension", "You are forbidden to do this action", "FAIL", HttpStatus.FORBIDDEN);
@@ -64,9 +86,15 @@ public class SuspensionControllerImpl implements SuspensionController{
     }
     @PutMapping("suspension")
     @Override
-    public ResponseEntity<Response> liftSuspension(@RequestBody LiftSuspensionDto liftSuspensionDto) {
-        UserDto user = userService.getUserByUserId(liftSuspensionDto.getAdminId());
-        if(user.getRoles().contains("ADMIN")) {
+    public ResponseEntity<Response> liftSuspension(
+            @RequestBody LiftSuspensionDto liftSuspensionDto,
+            @AuthenticationPrincipal User user
+    ) {
+
+        boolean isAdmin = user.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ADMIN"));
+
+        if(isAdmin) {
             return buildResponse.createResponse("suspension", suspensionService.liftSuspension(liftSuspensionDto), "Suspension lifted", HttpStatus.OK);
         } else {
             return buildResponse.createResponse("suspension", "You are forbidden to do this action", "FAIL", HttpStatus.FORBIDDEN);
