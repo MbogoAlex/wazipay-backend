@@ -7,6 +7,7 @@ import java.util.List;
 public interface WazipayWalletDao {
     WazipayWallet updateWallet(WazipayWallet wazipayWallet);
     WazipayWallet getWallet(Integer id);
+    List<WazipayWallet> getWallets();
     WazipayWalletTransaction addTransaction(WazipayWalletTransaction wazipayWalletTransaction);
     WazipayWalletTransaction updateTransaction(WazipayWalletTransaction wazipayWalletTransaction);
 

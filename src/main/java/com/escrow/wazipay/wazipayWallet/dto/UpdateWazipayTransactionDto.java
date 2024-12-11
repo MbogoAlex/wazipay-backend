@@ -13,7 +13,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateWazipayTransactionDto {
+public class UpdateWazipayTransactionDto {
+    private Integer transactionId;
     private WazipayWalletTransactionType transactionType;
     private Double amount;
     private String transactionCode;

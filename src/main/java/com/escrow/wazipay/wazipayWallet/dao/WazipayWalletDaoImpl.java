@@ -31,6 +31,12 @@ public class WazipayWalletDaoImpl implements WazipayWalletDao{
     }
 
     @Override
+    public List<WazipayWallet> getWallets() {
+        TypedQuery<WazipayWallet> query = entityManager.createQuery("from WazipayWallet", WazipayWallet.class);
+        return query.getResultList();
+    }
+
+    @Override
     public WazipayWalletTransaction addTransaction(WazipayWalletTransaction wazipayWalletTransaction) {
         entityManager.persist(wazipayWalletTransaction);
         return wazipayWalletTransaction;
