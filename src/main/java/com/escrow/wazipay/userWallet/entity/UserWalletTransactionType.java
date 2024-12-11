@@ -1,8 +1,8 @@
 package com.escrow.wazipay.userWallet.entity;
 
 public enum UserWalletTransactionType {
-    DEPOSIT,
-    PAYMENT,
-    WITHDRAWAL,
-    REFUND
+    USER_WALLET_DEPOSIT,
+    USER_WALLET_WITHDRAWAL,
+    USER_WALLET_REFUND,
+    ESCROW_DEPOSIT,
 }
