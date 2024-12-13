@@ -5,4 +5,5 @@ public enum UserWalletTransactionType {
     USER_WALLET_WITHDRAWAL,
     USER_WALLET_REFUND,
     ESCROW_DEPOSIT,
+    ESCROW_PAYMENT
 }

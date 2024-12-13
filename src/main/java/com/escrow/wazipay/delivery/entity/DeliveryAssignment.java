@@ -1,6 +1,6 @@
 package com.escrow.wazipay.delivery.entity;
 
-import com.escrow.wazipay.escrow.entity.EscrowTransaction;
+import com.escrow.wazipay.purchase.entity.EscrowTransaction;
 import com.escrow.wazipay.user.entity.UserAccount;
 import jakarta.persistence.*;
 import lombok.*;

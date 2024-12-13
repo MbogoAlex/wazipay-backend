@@ -9,6 +9,7 @@ import com.escrow.wazipay.user.entity.UserAccount;
 import com.escrow.wazipay.user.entity.UserRole;
 import com.escrow.wazipay.user.entity.UserRoleEnum;
 import com.escrow.wazipay.user.entity.VerificationStatus;
+import com.escrow.wazipay.userWallet.entity.UserWallet;
 import com.escrow.wazipay.verification.dto.ApproveUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -59,6 +60,13 @@ public class UserServiceImpl implements UserService{
         userRole.setRole(UserRoleEnum.BUYER);
         userRoles.add(userRole);
         user.setRoles(userRoles);
+
+        UserWallet userWallet = UserWallet.builder()
+                .user(user)
+                .balance(0.0)
+                .build();
+
+        user.setUserWallet(userWallet);
 
         return userDtoMapper.toUserDto(userDao.createAccount(user), domain);
     }

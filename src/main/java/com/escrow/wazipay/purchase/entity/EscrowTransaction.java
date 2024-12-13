@@ -1,4 +1,4 @@
-package com.escrow.wazipay.escrow.entity;
+package com.escrow.wazipay.purchase.entity;
 
 import com.escrow.wazipay.delivery.entity.DeliveryAssignment;
 import com.escrow.wazipay.user.entity.UserAccount;
@@ -19,7 +19,7 @@ public class EscrowTransaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "purchase_code", nullable = false)
+    @Column(name = "purchase_code", nullable = false, unique = true)
     private String purchaseCode;
     @Column(name = "product_name")
     private String productName;
@@ -27,7 +27,7 @@ public class EscrowTransaction {
     private String productDescription;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "buyer_id", nullable = false) // Foreign key to User table
+    @JoinColumn(name = "buyer_id", nullable = true) // Foreign key to User table
     private UserAccount buyer;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,12 +37,14 @@ public class EscrowTransaction {
     @Column(nullable = false)
     private Double amount;
     private Boolean paid;
+    @Column(name = "paidAt")
+    private LocalDateTime paidAt;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ProductStatus status;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = true, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
@@ -50,4 +52,6 @@ public class EscrowTransaction {
 
     @OneToOne(mappedBy = "transaction", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private DeliveryAssignment deliveryAssignment;
+    @Column(name = "payment_link")
+    private String paymentLink;
 }

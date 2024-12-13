@@ -10,6 +10,7 @@ import com.escrow.wazipay.user.entity.UserAccount;
 import com.escrow.wazipay.user.entity.UserRole;
 import com.escrow.wazipay.user.entity.UserRoleEnum;
 import com.escrow.wazipay.user.entity.VerificationStatus;
+import com.escrow.wazipay.userWallet.entity.UserWallet;
 import com.escrow.wazipay.verification.dao.UserVerificationDao;
 import com.escrow.wazipay.verification.dto.ApproveUserDto;
 import com.escrow.wazipay.verification.dto.RejectUserDto;
@@ -146,8 +147,10 @@ public class UserVerificationServiceImpl implements UserVerificationService{
 
         user.setVerified(true);
         user.setVerificationStatus(VerificationStatus.VERIFIED);
+
         user.getRoles().add(userRole);
         user.setVerifiedAt(LocalDateTime.now());
+
 
         MailStructure mailStructure = MailStructure
                 .builder()

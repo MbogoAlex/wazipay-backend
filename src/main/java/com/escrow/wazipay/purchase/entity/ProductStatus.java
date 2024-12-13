@@ -1,4 +1,4 @@
-package com.escrow.wazipay.escrow.entity;
+package com.escrow.wazipay.purchase.entity;
 
 public enum ProductStatus {
     PENDING,
