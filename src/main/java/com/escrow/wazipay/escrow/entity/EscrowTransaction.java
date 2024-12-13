@@ -21,7 +21,9 @@ public class EscrowTransaction {
 
     @Column(name = "purchase_code", nullable = false)
     private String purchaseCode;
+    @Column(name = "product_name")
     private String productName;
+    @Column(name = "product_description")
     private String productDescription;
 
     @ManyToOne(fetch = FetchType.LAZY)
