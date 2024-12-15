@@ -1,5 +1,6 @@
 package com.escrow.wazipay.purchase.entity;
 
+import com.escrow.wazipay.business.entity.Business;
 import com.escrow.wazipay.delivery.entity.DeliveryAssignment;
 import com.escrow.wazipay.user.entity.UserAccount;
 import jakarta.persistence.*;
@@ -25,6 +26,10 @@ public class EscrowTransaction {
     private String productName;
     @Column(name = "product_description")
     private String productDescription;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "business_id", nullable = false)
+    private Business business;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "buyer_id", nullable = true) // Foreign key to User table

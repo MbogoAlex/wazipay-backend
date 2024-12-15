@@ -1,5 +1,7 @@
 package com.escrow.wazipay.purchase.service.seller;
 
+import com.escrow.wazipay.business.dao.BusinessDao;
+import com.escrow.wazipay.business.entity.Business;
 import com.escrow.wazipay.media.dao.SettingsDao;
 import com.escrow.wazipay.purchase.dao.EscrowTransactionDao;
 import com.escrow.wazipay.purchase.dto.CreateEscrowTransactionDto;
@@ -22,17 +24,20 @@ public class SellerServiceImpl implements SellerService{
     private final EscrowTransactionDao escrowTransactionDao;
     private final UserDao userDao;
     private final SettingsDao settingsDao;
+    private final BusinessDao businessDao;
 
     private static final int PIN_LENGTH = 4;
     @Autowired
     public SellerServiceImpl(
             EscrowTransactionDao escrowTransactionDao,
             UserDao userDao,
-            SettingsDao settingsDao
+            SettingsDao settingsDao,
+            BusinessDao businessDao
     ) {
         this.escrowTransactionDao = escrowTransactionDao;
         this.userDao = userDao;
         this.settingsDao = settingsDao;
+        this.businessDao = businessDao;
     }
     @Transactional
     @Override
@@ -40,17 +45,22 @@ public class SellerServiceImpl implements SellerService{
         UserAccount seller = userDao.getUserByUserId(sellerId);
         String purchaseCode = generateUniquePurchaseCode();
 
+        Business business = businessDao.getBusinessById(createEscrowTransactionDto.getBusinessId());
+
+
         EscrowTransaction escrowTransaction = EscrowTransaction.builder()
                 .purchaseCode(purchaseCode)
                 .productName(createEscrowTransactionDto.getProductName())
                 .productDescription(createEscrowTransactionDto.getProductDescription())
                 .amount(createEscrowTransactionDto.getAmount())
                 .seller(seller)
+                .business(business)
                 .buyer(null)
                 .paid(false)
                 .status(ProductStatus.PENDING)
                 .createdAt(LocalDateTime.now())
                 .build();
+
         EscrowTransaction savedTransaction = escrowTransactionDao.createEscrowTransaction(escrowTransaction);
         escrowTransaction.setPaymentLink(settingsDao.findBySettingsKey("domain").getValue() + "/api/payment/details/"+savedTransaction.getId());
 

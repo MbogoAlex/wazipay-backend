@@ -1,5 +1,6 @@
 package com.escrow.wazipay.business.entity;
 
+import com.escrow.wazipay.purchase.entity.EscrowTransaction;
 import com.escrow.wazipay.user.entity.UserAccount;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -36,4 +38,6 @@ public class Business {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserAccount user;
+    @OneToMany(mappedBy = "business", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<EscrowTransaction> escrowTransactions;
 }

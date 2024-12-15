@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CreateEscrowTransactionDto {
+    private Integer businessId;
     private String productName;
     private String productDescription;
     private Double amount;

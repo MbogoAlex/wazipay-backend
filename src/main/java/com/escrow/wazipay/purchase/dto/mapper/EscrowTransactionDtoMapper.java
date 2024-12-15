@@ -21,6 +21,7 @@ public class EscrowTransactionDtoMapper {
                 .createdAt(escrowTransaction.getCreatedAt())
                 .updatedAt(escrowTransaction.getUpdatedAt())
                 .amount(escrowTransaction.getAmount())
+                .businessName(escrowTransaction.getBusiness().getBusinessName())
                 .buyer(buyer != null ? escrowUserDtoMapper.toBuyerDto(escrowTransaction.getBuyer()) : null)
                 .seller(escrowUserDtoMapper.toSellerDto(escrowTransaction.getSeller()))
                 .deliveryDetails(deliveryAssignmentDtoMapper.toDeliveryAssignmentDto(escrowTransaction.getDeliveryAssignment()))

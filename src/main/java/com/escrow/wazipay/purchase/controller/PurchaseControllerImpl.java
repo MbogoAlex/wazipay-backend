@@ -105,7 +105,7 @@ public class PurchaseControllerImpl implements PurchaseController {
     @PostMapping("payment/authorize/{transactionId}")
     @Override
     public ResponseEntity<Response> authorizePurchase(
-            @PathVariable("id") Integer transactionId,
+            @PathVariable("transactionId") Integer transactionId,
             @AuthenticationPrincipal User user
     ) {
         return buildResponse.createResponse("purchase", deliveryService.authorizePayment(transactionId), "Payment authorized", HttpStatus.OK);

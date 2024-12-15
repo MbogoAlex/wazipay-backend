@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 public class EscrowTransactionDto {
     private Integer id;
     private String purchaseCode;
+    private String businessName;
     private String productName;
     private String productDescription;
     private Double amount;
