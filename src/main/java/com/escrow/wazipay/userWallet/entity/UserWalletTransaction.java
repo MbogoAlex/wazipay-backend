@@ -22,7 +22,7 @@ public class UserWalletTransaction {
     private Integer id;
     @Enumerated(EnumType.STRING)
     private UserWalletTransactionType userWalletTransactionType;
-    @Column(name = "transaction_code", unique = true)
+    @Column(name = "transaction_code")
     private String transactionCode;
     @Column(name = "transaction_amount")
     private Double transactionAmount;

@@ -15,6 +15,7 @@ import com.escrow.wazipay.purchase.entity.ProductStatus;
 import com.escrow.wazipay.user.dao.UserDao;
 import com.escrow.wazipay.user.entity.UserAccount;
 import com.escrow.wazipay.userWallet.dao.UserWalletDao;
+import com.escrow.wazipay.userWallet.entity.UserWallet;
 import com.escrow.wazipay.userWallet.entity.UserWalletTransaction;
 import com.escrow.wazipay.userWallet.entity.UserWalletTransactionType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,6 +89,9 @@ public class DeliveryServiceImpl implements DeliveryService{
         UserAccount seller = escrowTransaction.getSeller();
         UserAccount deliveryMan = deliveryAssignment.getDeliveryMan();
 
+        UserWallet sellerWallet = seller.getUserWallet();
+        sellerWallet.setBalance(sellerWallet.getBalance() + escrowTransaction.getAmount());
+
 
         LocalDateTime paidAt = LocalDateTime.now();
 
@@ -100,7 +104,7 @@ public class DeliveryServiceImpl implements DeliveryService{
                 .transactionCode(escrowTransaction.getPurchaseCode())
                 .transactionAmount(escrowTransaction.getAmount())
                 .createdAt(paidAt)
-                .userWallet(seller.getUserWallet())
+                .userWallet(sellerWallet)
                 .balance(seller.getUserWallet().getBalance() + escrowTransaction.getAmount())
                 .build();
 
