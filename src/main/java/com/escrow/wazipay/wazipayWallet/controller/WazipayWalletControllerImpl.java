@@ -24,6 +24,6 @@ public class WazipayWalletControllerImpl implements WazipayWalletController{
     @GetMapping("wazipaywallet")
     @Override
     public ResponseEntity<Response> getWazipayWalletDetails() {
-        return buildResponse.createResponse("Wazipay wallet", wazipayWalletService.getWallets().get(0), "Wazipay wallet fetched", HttpStatus.OKgit add);
+        return buildResponse.createResponse("Wazipay wallet", wazipayWalletService.getWallets().get(0), "Wazipay wallet fetched", HttpStatus.OK);
     }
 }
