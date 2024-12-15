@@ -18,6 +18,8 @@ import com.escrow.wazipay.userWallet.dao.UserWalletDao;
 import com.escrow.wazipay.userWallet.entity.UserWallet;
 import com.escrow.wazipay.userWallet.entity.UserWalletTransaction;
 import com.escrow.wazipay.userWallet.entity.UserWalletTransactionType;
+import com.escrow.wazipay.wazipayWallet.dao.WazipayWalletDao;
+import com.escrow.wazipay.wazipayWallet.entity.WazipayWallet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,19 +34,22 @@ public class DeliveryServiceImpl implements DeliveryService{
     private final UserDao userDao;
     private final SettingsDao settingsDao;
     private final UserWalletDao userWalletDao;
+    private final WazipayWalletDao wazipayWalletDao;
     @Autowired
     public DeliveryServiceImpl(
             EscrowTransactionDao escrowTransactionDao,
             UserDao userDao,
             SettingsDao settingsDao,
             DeliveryDao deliveryDao,
-            UserWalletDao userWalletDao
+            UserWalletDao userWalletDao,
+            WazipayWalletDao wazipayWalletDao
     ) {
         this.escrowTransactionDao = escrowTransactionDao;
         this.userDao = userDao;
         this.settingsDao = settingsDao;
         this.deliveryDao = deliveryDao;
         this.userWalletDao = userWalletDao;
+        this.wazipayWalletDao = wazipayWalletDao;
     }
     @Transactional
     @Override
@@ -83,6 +88,7 @@ public class DeliveryServiceImpl implements DeliveryService{
     @Transactional
     @Override
     public DeliveryAssignmentDto authorizePayment(Integer transactionId) {
+        WazipayWallet wazipayWallet = wazipayWalletDao.getWallets().get(0);
         EscrowTransaction escrowTransaction = escrowTransactionDao.getEscrowTransaction(transactionId);
         DeliveryAssignment deliveryAssignment = escrowTransaction.getDeliveryAssignment();
         UserAccount buyer = escrowTransaction.getBuyer();
@@ -92,12 +98,15 @@ public class DeliveryServiceImpl implements DeliveryService{
         UserWallet sellerWallet = seller.getUserWallet();
         sellerWallet.setBalance(sellerWallet.getBalance() + escrowTransaction.getAmount());
 
+        wazipayWallet.setBalance(wazipayWallet.getBalance() - escrowTransaction.getAmount());
+
 
         LocalDateTime paidAt = LocalDateTime.now();
 
         escrowTransaction.setStatus(ProductStatus.DELIVERED);
 
         deliveryAssignment.setDeliveredAt(LocalDateTime.now());
+        deliveryAssignment.setStatus(DeliveryStatus.COMPLETED);
 
         UserWalletTransaction userWalletTransaction = UserWalletTransaction.builder()
                 .userWalletTransactionType(UserWalletTransactionType.ESCROW_PAYMENT)
@@ -105,8 +114,10 @@ public class DeliveryServiceImpl implements DeliveryService{
                 .transactionAmount(escrowTransaction.getAmount())
                 .createdAt(paidAt)
                 .userWallet(sellerWallet)
-                .balance(seller.getUserWallet().getBalance() + escrowTransaction.getAmount())
+                .balance(sellerWallet.getBalance())
                 .build();
+
+        wazipayWalletDao.updateWallet(wazipayWallet);
 
         userWalletDao.createTransaction(userWalletTransaction);
 
