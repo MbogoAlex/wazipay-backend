@@ -8,4 +8,6 @@ public interface BusinessDao {
     Business updateBusiness(Business business);
     Business getBusinessById(Integer businessId);
     List<Business> getUserBusinesses(Integer userId);
+
+    List<Business> getBusinesses(Integer userId, String name, String location, String owner);
 }
