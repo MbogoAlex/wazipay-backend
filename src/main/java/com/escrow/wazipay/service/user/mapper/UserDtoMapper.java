@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDtoMapper {
-    UserDetailsResponseDto userDetailsResponseDto(UserAccount userAccount, String domain) {
+    public UserDetailsResponseDto userDetailsResponseDto(UserAccount userAccount, String domain) {
         String idFront = null;
         String idBack = null;
 
@@ -31,7 +31,7 @@ public class UserDtoMapper {
                 .build();
     }
 
-    UserVerificationDetailsResponseDto userVerificationDetailsDto(UserVerification userVerification, String domain) {
+    public UserVerificationDetailsResponseDto userVerificationDetailsDto(UserVerification userVerification, String domain) {
 
         List<VerificationFile> verificationFiles = userVerification.getFiles();
 
