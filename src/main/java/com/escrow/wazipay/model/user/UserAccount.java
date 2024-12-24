@@ -35,12 +35,20 @@ public class UserAccount {
 
     private Boolean verified;
 
+    private Boolean archived;
+
+    @Column(name = "archived_at")
+    private LocalDateTime archivedAt;
+
     @Column(name = "verification_status")
     @Enumerated(EnumType.STRING)
     private VerificationStatus verificationStatus;
 
     @OneToOne(mappedBy = "userAccount", cascade = CascadeType.ALL, orphanRemoval = true)
     private UserVerification userVerification;
+
+    @OneToOne(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserVerification> userVerifications;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<UserRole> roles;

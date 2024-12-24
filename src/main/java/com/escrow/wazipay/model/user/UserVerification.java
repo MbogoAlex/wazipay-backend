@@ -23,6 +23,10 @@ public class UserVerification {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserAccount userAccount;
 
+    @ManyToOne
+    @JoinColumn(name = "admin_id", referencedColumnName = "id")
+    private UserAccount admin;
+
     @Column(name = "verification_status")
     @Enumerated(EnumType.STRING)
     private VerificationStatus verificationStatus;
