@@ -40,10 +40,6 @@ public class UserAccount {
     @Column(name = "archived_at")
     private LocalDateTime archivedAt;
 
-    @Column(name = "verification_status")
-    @Enumerated(EnumType.STRING)
-    private VerificationStatus verificationStatus;
-
     @OneToOne(mappedBy = "userAccount", cascade = CascadeType.ALL, orphanRemoval = true)
     private UserVerification userVerification;
 

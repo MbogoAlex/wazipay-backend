@@ -100,9 +100,6 @@ public class UserServiceImpl implements UserService{
         String basePath = settingsDao.findBySettingsKey("imagePath").getValue();
         Settings domain = settingsDao.findBySettingsKey("domain");
 
-        // Update user's verification status
-        user.setVerificationStatus(VerificationStatus.PENDING_VERIFICATION);
-
         MultipartFile idFront = files[0];
         MultipartFile idBack = files[1];
 
@@ -131,6 +128,7 @@ public class UserServiceImpl implements UserService{
         // Build and link UserVerification object
         UserVerification userVerification = UserVerification.builder()
                 .userAccount(user) // Important: Set the user here
+                .verificationStatus(VerificationStatus.PENDING_VERIFICATION)
                 .build();
 
         // Set userVerification for each image
