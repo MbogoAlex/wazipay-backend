@@ -1,7 +1,7 @@
 package com.escrow.wazipay.response.mvc;
 
-import com.escrow.wazipay.media.dao.SettingsDao;
-import com.escrow.wazipay.media.entity.Settings;
+import com.escrow.wazipay.dao.settings.SettingsDao;
+import com.escrow.wazipay.model.settings.Settings;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
